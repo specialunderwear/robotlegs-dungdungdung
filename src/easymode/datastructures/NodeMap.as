@@ -4,18 +4,19 @@ package easymode.datastructures
 	import flash.utils.Proxy;
 	import easymode.errors.NodeMapDuplicateError;
 	import easymode.interfaces.INodeWalker;
+	import easymode.errors.NodeMapInvalid;
 		
 	public class NodeMap
 		implements INodeWalker
 	{
 		private var _viewComponentClass:Class;
 		private var _valueObjectClass:Class;
-		private var _nodes:Array;
+		private var _nodes:Object;
 		
 		public function NodeMap()
 		{
 			super();
-			_nodes = [];
+			_nodes = {};
 		}
 		
 		/*override flash_proxy function getProperty(name:*):*
@@ -26,7 +27,6 @@ package easymode.datastructures
 		public function getOrCreateNode(name:String):Node
 		{
 			var node:Node;
-			trace("NodeMap::getOrCreateNode()",  name in _nodes);
 			if (name in _nodes) {
 				node = _nodes[name];
 			} else {
@@ -41,13 +41,15 @@ package easymode.datastructures
 		public function addRule(rule:String, viewComponentClass:Class, valueObjectClass:Class=null):void
 		{
 			var paths:Array = rule.split('.').reverse();
-			var current:Node = getOrCreateNode(paths.pop());
-			
+			var current:Node = getOrCreateNode(paths.shift());
+			var leafFound:Boolean = false;
+
 			for each (var path:String in paths) {
 				current = current.getOrCreateNode(path);
+				leafFound = current.leaf || leafFound;
 			}
-			
-			if (current.leaf) {
+
+			if (leafFound || current.numNodes) {
 				throw new NodeMapDuplicateError(rule, viewComponentClass);
 			}
 			
@@ -58,11 +60,10 @@ package easymode.datastructures
 		
 		public function resolve(obj:XML):Node
 		{
-			var node:Node;
 			if (obj.name() in _nodes) {
-				node = _nodes[obj.name()].resolveWithParent(obj);
+				return _nodes[obj.name()].resolveWithParent(obj);
 			}
-			return node;
+			throw new NodeMapInvalid(String(obj.name()));
 		}
 
 	}

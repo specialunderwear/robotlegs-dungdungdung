@@ -9,23 +9,31 @@ package easymode.datastructures
 		public var leaf:Boolean = true;
 		public var viewClass:Class;
 		public var voClass:Class;
-		protected var _nodes:Array;
+		protected var _nodes:Object;
+		protected var _numNodes:uint;
+		
+		public function get numNodes():uint
+		{
+			return _numNodes;
+		}
 		
 		public function Node()
 		{
 			super();
-			_nodes = [];
+			_nodes = {};
+			_numNodes = 0;
 		}
 
 		public function getOrCreateNode(name:String):Node
 		{
-			var node:Node
+			var node:Node;
 			if (name in _nodes) {
 				node = _nodes[name];
 			} else {
 				node = new Node();
 				node.leaf = false;
 				_nodes[name] = node;
+				_numNodes++;
 			}
 			
 			return node;
@@ -44,6 +52,11 @@ package easymode.datastructures
 			
 			throw new NodeMapInvalid(obj.name() + '.' + parent.name());
 			
+		}
+		
+		public function toString():String
+		{
+			return "[Node leaf=" + leaf +" viewClass=" + viewClass +" voClass="+ voClass + "]";
 		}
 	}
 }
