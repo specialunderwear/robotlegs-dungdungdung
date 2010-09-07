@@ -1,0 +1,6 @@
+*.swf
+*.log
+lib
+Easymode.as
+EasymodeContext.as
+easymode/view
