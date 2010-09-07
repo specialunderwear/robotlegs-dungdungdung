@@ -6,7 +6,7 @@ package easymode.datastructures
 	import easymode.interfaces.INodeWalker;
 	import easymode.errors.NodeMapInvalid;
 		
-	public class NodeMap
+	public final class NodeMap
 		implements INodeWalker
 	{
 		private var _viewComponentClass:Class;

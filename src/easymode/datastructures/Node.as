@@ -3,14 +3,14 @@ package easymode.datastructures
 	import easymode.errors.NodeMapInvalid;
 	import easymode.interfaces.INodeWalker;
 	
-	public class Node
+	public final class Node
 		implements INodeWalker
 	{
 		public var leaf:Boolean = true;
 		public var viewClass:Class;
 		public var voClass:Class;
-		protected var _nodes:Object;
-		protected var _numNodes:uint;
+		private var _nodes:Object;
+		private var _numNodes:uint;
 		
 		public function get numNodes():uint
 		{
