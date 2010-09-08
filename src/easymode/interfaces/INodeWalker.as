@@ -4,6 +4,7 @@ package easymode.interfaces
 	
 	public interface INodeWalker
 	{
-		function getOrCreateNode(name:String):Node;
+		function getNodeByName(name:String):Node;
+		function getOrCreateNodeByName(name:String):Node;
 	}
 }

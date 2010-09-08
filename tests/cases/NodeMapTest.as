@@ -32,7 +32,7 @@ package cases
 		{
 			Assert.assertEquals(
 				'nodemap should return Sprite when handed a menu node.',
-				nodeMap.resolve(menu).viewClass, Sprite
+				Sprite, nodeMap.resolve(menu).viewClass
 			);
 		}
 		
@@ -42,7 +42,7 @@ package cases
 			for each (var node:XML in menuitems) {
 				Assert.assertEquals(
 					'nodeMap should return DisplayObject when handed a menuitem node that is a child of menu', 
-					nodeMap.resolve(node).viewClass, DisplayObject
+					DisplayObject, nodeMap.resolve(node).viewClass
 				);
 			}
 		}
@@ -53,7 +53,7 @@ package cases
 			for each (var node:XML in menuitems2) {
 				Assert.assertEquals(
 					'the menuitem node is mapped 2 times but should yield different objects for both maps', 
-					nodeMap.resolve(node).viewClass, MovieClip
+					MovieClip, nodeMap.resolve(node).viewClass
 				);
 			}
 		}

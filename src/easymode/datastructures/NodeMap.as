@@ -1,45 +1,69 @@
 package easymode.datastructures
 {	
 	import easymode.datastructures.Node;
-	import easymode.interfaces.INodeWalker;
-	import easymode.errors.NodeMapInvalid;
 	import easymode.errors.NodeMapConflictError;
-		
+	import easymode.errors.NodeMapInvalid;
+	
+	/**
+	 * The NodeMap is used to map xpath like xml
+	 * selectors to viewComponents + value objects.
+	 * 
+	 * @langversion ActionScript 3
+	 * @playerversion Flash 9.0.0
+	 * 
+	 * @author Lars van de Kerkhof
+	 * @since  08.09.2010
+	 */
+	
 	public final class NodeMap
-		implements INodeWalker
 	{
+		//---------------------------------------
+		// PRIVATE VARIABLES
+		//---------------------------------------
+		
 		private var _viewComponentClass:Class;
 		private var _valueObjectClass:Class;
-		private var _nodes:Object;
+		private var _rootNode:Node;
+		
+		//---------------------------------------
+		// CONSTRUCTOR
+		//---------------------------------------
+		
+		/**
+		 * @constructor
+		 */
 		
 		public function NodeMap()
 		{
 			super();
-			_nodes = {};
+			_rootNode = new Node();
 		}
 		
-		public function getOrCreateNode(name:String):Node
-		{
-			var node:Node;
-			if (name in _nodes) {
-				node = _nodes[name];
-			} else {
-				node = new Node();
-				node.leaf = false;
-				_nodes[name] = node;
-			}
-			
-			return node;
-		}
+		//---------------------------------------
+		// PUBLIC METHODS
+		//---------------------------------------
+		
+		/**
+		 * Adds a rule that associates a node in the xml with a view component and a value object.
+		 * 
+		 * @param rule a xpath like pattern: 'node.subnode.etc' enough to uniquely identify 
+		 * a node in an xml tree.
+		 * @param viewComponentClass The class of the viewcomponent that should be created when a node
+		 * matched by <code>rule</code> is encountered in the xml.
+		 * @param valueObjectClass The class of the valueobject that should be created when a node
+		 * matched by <code>rule</code> is encountered in the xml; the direct children of this node
+		 * will be bound to the valueobject using <code>mapValue(String, childnode, childnode.name())</code>.
+		 * @throws NodeMapConflictError when 2 rules would conflict or shadow eachother.
+		 */
 		
 		public function addRule(rule:String, viewComponentClass:Class, valueObjectClass:Class=null):void
 		{
 			var paths:Array = rule.split('.').reverse();
-			var current:Node = getOrCreateNode(paths.shift());
+			var current:Node = _rootNode;
 			var leafFound:Boolean = false;
 
 			for each (var path:String in paths) {
-				current = current.getOrCreateNode(path);
+				current = current.getOrCreateNodeByName(path);
 				leafFound = current.leaf || leafFound;
 			}
 
@@ -52,12 +76,26 @@ package easymode.datastructures
 			current.leaf = true;
 		}
 		
+		/**
+		 * Given an xml node, <code>resolve</code> will return the node object that
+		 * can be matched to that node. The node object contains a view Class and a
+		 * value object class.
+		 * @param obj the xml node
+		 * @return Node 
+		 * @throws NodeMapInvalid when no rule can match the piece of xml.
+		 */
+		
 		public function resolve(obj:XML):Node
 		{
-			if (obj.name() in _nodes) {
-				return _nodes[obj.name()].resolveWithParent(obj);
+			var node:Node = _rootNode.getNodeByName(obj.name());
+			if (! node) {
+				throw new NodeMapInvalid(obj.name())
 			}
-			throw new NodeMapInvalid(String(obj.name()));
+			
+			if (node.leaf)
+				return node;
+				
+			return node.resolveByXMLSignature(obj);
 		}
 
 	}

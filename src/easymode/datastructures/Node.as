@@ -2,20 +2,57 @@ package easymode.datastructures
 {	
 	import easymode.errors.NodeMapInvalid;
 	import easymode.interfaces.INodeWalker;
+	import mx.utils.ObjectUtil;
+	
+	/**
+	 * The Node is used by NodeMap to store paths as
+	 * a tree.
+	 * 
+	 * @langversion ActionScript 3
+	 * @playerversion Flash 9.0.0
+	 * 
+	 * @author Lars van de Kerkhof
+	 * @since  08.09.2010
+	 * @see easymode.datastructures.NodeMap;
+	 */
 	
 	public final class Node
 		implements INodeWalker
 	{
-		public var leaf:Boolean = true;
+		//---------------------------------------
+		// PUBLIC VARIABLES
+		//---------------------------------------
+		public var leaf:Boolean = false;
 		public var viewClass:Class;
 		public var voClass:Class;
+		
+		//---------------------------------------
+		// PRIVATE VARIABLES
+		//---------------------------------------
+		
 		private var _nodes:Object;
 		private var _numNodes:uint;
+		
+		//---------------------------------------
+		// GETTER / SETTERS
+		//---------------------------------------
+		
+		/**
+		 * The number of paths that pass through this node.
+		 */
 		
 		public function get numNodes():uint
 		{
 			return _numNodes;
 		}
+
+		//---------------------------------------
+		// CONSTRUCTOR
+		//---------------------------------------
+		
+		/**
+		 * @constructor
+		 */
 		
 		public function Node()
 		{
@@ -24,14 +61,36 @@ package easymode.datastructures
 			_numNodes = 0;
 		}
 
-		public function getOrCreateNode(name:String):Node
+		//---------------------------------------
+		// PUBLIC METHODS
+		//---------------------------------------
+		
+		/**
+		 * Retrieves a subnode by a certain name.
+		 * @param name The name of the node.
+		 * @return Node or null
+		 */
+		
+		public function getNodeByName(name:String):Node
 		{
-			var node:Node;
 			if (name in _nodes) {
-				node = _nodes[name];
-			} else {
+				return _nodes[name];
+			}
+			return null;
+		}
+		
+		/**
+		 * Retrieves a subnode by a certain name, but if it doesn't exist yet.
+		 * the node will be created.
+		 * @param name The name of the node.
+		 * @return Node 
+		 */
+		
+		public function getOrCreateNodeByName(name:String):Node
+		{
+			var node:Node = getNodeByName(name);
+			 if (! node) {
 				node = new Node();
-				node.leaf = false;
 				_nodes[name] = node;
 				_numNodes++;
 			}
@@ -39,24 +98,33 @@ package easymode.datastructures
 			return node;
 		}
 
-		public function resolveWithParent(obj:XML):Node
+		/**
+		 * Returns the node identified by a piece of xml.
+		 * @param obj the xml that identifies the node.
+		 * @return Node 
+		 */
+		
+		public function resolveByXMLSignature(obj:XML):Node
 		{
 			if (leaf) {
+				trace("Node::resolveByXMLSignature() is leaf", this);
 				return this;
 			} else {
 				var parent:XML = obj.parent();
 				if (parent.name() in _nodes) {
-					return _nodes[parent.name()].resolveWithParent(parent)
+					return _nodes[parent.name()].resolveByXMLSignature(parent)
+				} else {
+					trace(ObjectUtil.toString(_nodes));
 				}
 			}
 			
-			throw new NodeMapInvalid(obj.name() + '.' + parent.name());
+			throw new NodeMapInvalid(parent.name() + '.' + obj.name() );
 			
 		}
 		
 		public function toString():String
 		{
-			return "[Node leaf=" + leaf +" viewClass=" + viewClass +" voClass="+ voClass + "]";
+			return "[Node leaf=" + leaf +" viewClass=" + viewClass +" voClass="+ voClass + " + numNodes="+ numNodes + "]";
 		}
 	}
 }
