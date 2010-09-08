@@ -1,8 +1,8 @@
-package easymode.datastructures
-{	
-	import easymode.datastructures.Node;
-	import easymode.errors.NodeMapConflictError;
-	import easymode.errors.NodeMapInvalid;
+package dung.dung.dung.datastructures
+{
+	import dung.dung.dung.datastructures.Node;
+	import dung.dung.dung.errors.NodeMapConflictError;
+	import dung.dung.dung.errors.NodeMapInvalid;
 	
 	/**
 	 * The NodeMap is used to map xpath like xml

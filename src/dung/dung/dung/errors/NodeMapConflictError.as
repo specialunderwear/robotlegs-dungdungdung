@@ -1,7 +1,5 @@
-package easymode.errors
-{	
-	import Error;
-	
+package dung.dung.dung.errors
+{
 	public class NodeMapConflictError extends Error
 	{
 		private var _cls:Class

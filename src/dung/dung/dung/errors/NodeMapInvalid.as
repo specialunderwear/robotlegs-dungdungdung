@@ -1,6 +1,5 @@
-package easymode.errors
+package dung.dung.dung.errors
 {
-
 	public class NodeMapInvalid extends Error
 	{
 	

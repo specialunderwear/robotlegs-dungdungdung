@@ -1,6 +1,6 @@
-package easymode.interfaces
-{	
-	import easymode.datastructures.Node;
+package dung.dung.dung.interfaces
+{
+	import dung.dung.dung.datastructures.Node;
 	
 	public interface INodeWalker
 	{

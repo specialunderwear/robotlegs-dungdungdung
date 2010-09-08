@@ -1,6 +1,6 @@
 package cases
 {	
-	import easymode.datastructures.NodeMap;
+	import dung.dung.dung.datastructures.NodeMap;
 	import data.xmldata;
 	import flash.display.MovieClip;
 	import flash.display.DisplayObject;
@@ -58,13 +58,13 @@ package cases
 			}
 		}
 		
-		[Test(expects='easymode.errors.NodeMapConflictError')]
+		[Test(expects='dung.dung.dung.errors.NodeMapConflictError')]
 		public function notSpecificEnoughMapError():void
 		{
 			nodeMap.addRule('menuitem', Class);
 		}
 
-		[Test(expects='easymode.errors.NodeMapConflictError')]
+		[Test(expects='dung.dung.dung.errors.NodeMapConflictError')]
 		public function mapConflictError():void
 		{
 			nodeMap.addRule('error.pages.page.menuitem', Class);

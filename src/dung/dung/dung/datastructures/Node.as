@@ -1,8 +1,8 @@
-package easymode.datastructures
-{	
-	import easymode.errors.NodeMapInvalid;
-	import easymode.interfaces.INodeWalker;
+package dung.dung.dung.datastructures
+{
 	import mx.utils.ObjectUtil;
+	import dung.dung.dung.errors.NodeMapInvalid;
+	import dung.dung.dung.interfaces.INodeWalker;
 	
 	/**
 	 * The Node is used by NodeMap to store paths as
