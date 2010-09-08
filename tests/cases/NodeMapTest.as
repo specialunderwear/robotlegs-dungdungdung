@@ -58,13 +58,13 @@ package cases
 			}
 		}
 		
-		[Test(expects='easymode.errors.NodeMapDuplicateError')]
+		[Test(expects='easymode.errors.NodeMapConflictError')]
 		public function notSpecificEnoughMapError():void
 		{
 			nodeMap.addRule('menuitem', Class);
 		}
 
-		[Test(expects='easymode.errors.NodeMapDuplicateError')]
+		[Test(expects='easymode.errors.NodeMapConflictError')]
 		public function mapConflictError():void
 		{
 			nodeMap.addRule('error.pages.page.menuitem', Class);

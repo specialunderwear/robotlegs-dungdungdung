@@ -1,10 +1,9 @@
 package easymode.datastructures
 {	
 	import easymode.datastructures.Node;
-	import flash.utils.Proxy;
-	import easymode.errors.NodeMapDuplicateError;
 	import easymode.interfaces.INodeWalker;
 	import easymode.errors.NodeMapInvalid;
+	import easymode.errors.NodeMapConflictError;
 		
 	public final class NodeMap
 		implements INodeWalker
@@ -19,11 +18,6 @@ package easymode.datastructures
 			_nodes = {};
 		}
 		
-		/*override flash_proxy function getProperty(name:*):*
-		{
-			return _nodes[name];
-		}*/
-
 		public function getOrCreateNode(name:String):Node
 		{
 			var node:Node;
@@ -50,7 +44,7 @@ package easymode.datastructures
 			}
 
 			if (leafFound || current.numNodes) {
-				throw new NodeMapDuplicateError(rule, viewComponentClass);
+				throw new NodeMapConflictError(rule, viewComponentClass);
 			}
 			
 			current.viewClass = viewComponentClass;
