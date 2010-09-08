@@ -9,7 +9,7 @@
 		<keep-generated-actionscript>false</keep-generated-actionscript>
 		<allow-source-path-overlap>true</allow-source-path-overlap>
 		<warn-no-constructor>false</warn-no-constructor>
-		<warn-no-explicit-super-call-in-constructor>false</warn-no-explicit-super-call-in-constructor>
+		<warn-no-explicit-super-call-in-constructor>true</warn-no-explicit-super-call-in-constructor>
 		<show-actionscript-warnings>true</show-actionscript-warnings>
 		<show-binding-warnings>true</show-binding-warnings>
 		<show-unused-type-selector-warnings>true</show-unused-type-selector-warnings>
@@ -32,8 +32,8 @@
 	<output>../bin/testsuite.swf</output>
 	
 	<metadata>
-		<title>Easymode</title>
-		<description>An easymode example</description>
+		<title>dungdungdung</title>
+		<description>Test suite for dungdungdung</description>
 		<publisher>Lars van de Kerkhof</publisher>
 		<creator>Lars van de Kerkhof</creator>
 		<language>EN</language>

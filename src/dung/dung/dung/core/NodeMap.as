@@ -1,4 +1,4 @@
-package dung.dung.dung.datastructures
+package dung.dung.dung.core
 {
 	import dung.dung.dung.datastructures.Node;
 	import dung.dung.dung.errors.NodeMapConflictError;
@@ -15,7 +15,7 @@ package dung.dung.dung.datastructures
 	 * @since  08.09.2010
 	 */
 	
-	public final class NodeMap
+	public class NodeMap
 	{
 		//---------------------------------------
 		// PRIVATE VARIABLES
@@ -56,7 +56,7 @@ package dung.dung.dung.datastructures
 		 * @throws NodeMapConflictError when 2 rules would conflict or shadow eachother.
 		 */
 		
-		public function addRule(rule:String, viewComponentClass:Class, valueObjectClass:Class=null):void
+		public function mapPath(rule:String, viewComponentClass:Class, valueObjectClass:Class=null):void
 		{
 			var paths:Array = rule.split('.').reverse();
 			var current:Node = _rootNode;

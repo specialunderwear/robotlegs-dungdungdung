@@ -1,11 +1,11 @@
 package cases
 {	
-	import dung.dung.dung.datastructures.NodeMap;
 	import data.xmldata;
 	import flash.display.MovieClip;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import org.flexunit.Assert;
+	import dung.dung.dung.core.NodeMap;
 	
 	public class NodeMapTest
 	{
@@ -18,9 +18,9 @@ package cases
 		public function mapPaths():void
 		{
 			nodeMap = new NodeMap();
-			nodeMap.addRule('menu', Sprite);
-			nodeMap.addRule('menu.children.menuitem', DisplayObject);
-			nodeMap.addRule('pages.page.menuitem', MovieClip)
+			nodeMap.mapPath('menu', Sprite);
+			nodeMap.mapPath('menu.children.menuitem', DisplayObject);
+			nodeMap.mapPath('pages.page.menuitem', MovieClip)
 			
 			menu = XML(xmldata.assets.menu);
 			menuitems = xmldata.assets.menu.children.menuitem;
@@ -61,13 +61,13 @@ package cases
 		[Test(expects='dung.dung.dung.errors.NodeMapConflictError')]
 		public function notSpecificEnoughMapError():void
 		{
-			nodeMap.addRule('menuitem', Class);
+			nodeMap.mapPath('menuitem', Class);
 		}
 
 		[Test(expects='dung.dung.dung.errors.NodeMapConflictError')]
 		public function mapConflictError():void
 		{
-			nodeMap.addRule('error.pages.page.menuitem', Class);
+			nodeMap.mapPath('error.pages.page.menuitem', Class);
 		}
 	}
 }
