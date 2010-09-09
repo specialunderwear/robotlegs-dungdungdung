@@ -17,12 +17,11 @@ package cases
 		
 		private function mapItems():ChildList
 		{
-			injector.mapValue(XMLList, childlistdata.item, ChildList.DATA_PROVIDER);
 			injector.mapClass(ViewMock1, ViewMock1);
 			nodeMap.mapPath('item', ViewMock1);
 			Assert.assertEquals('4 item nodes should be in the xml', 4, childlistdata.item.length());
 			
-			var childList:ChildList = new ChildList();
+			var childList:ChildList = new ChildList(childlistdata.item);
 			injector.injectInto(childList);
 			return childList;
 		}
@@ -41,8 +40,7 @@ package cases
 		[Test]
 		public function canCreateChildNode():void
 		{
-			injector.mapValue(XMLList, childlistdata.item, ChildList.DATA_PROVIDER);
-			var childList:ChildList = new ChildList();
+			var childList:ChildList = new ChildList(childlistdata.item);
 			injector.injectInto(childList);
 			Assert.assertTrue('injector was set', childList.injector);
 			Assert.assertTrue('nodemap was set', childList.nodeMap);

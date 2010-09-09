@@ -14,7 +14,6 @@ package dung.dung.dung.core
 		implements IChildList
 	{
 		public static const CHILDLIST_NODE_NAME:String = 'dung.dung.dung.core.ChildList.childListNodeName';
-		public static const DATA_PROVIDER:String = 'dung.dung.dung.core.ChildList.dataProvider';
 		
 		private var _prepared:Boolean = false;
 		
@@ -24,22 +23,17 @@ package dung.dung.dung.core
 		[Inject(name='dung.dung.dung.core.ChildList.childListNodeName')]
 		public var childListNodeName:String = 'children';
 		
-		[Inject(name='dung.dung.dung.core.ChildList.dataProvider')]
-		public function set dataProvider(value:XMLList):void
-		{
-			_dataProvider = value;
-		}
-		
 		[Inject]
 		public var nodeMap:INodeMap;
 		
 		[Inject]
 		public var injector:IInjector;
 		
-		public function ChildList()
+		public function ChildList(dataProvider:XMLList=null)
 		{
 			super();
 			_typeDict = new Dictionary();
+			_dataProvider = dataProvider;
 		}
 		
 		protected function prepareObjects():void
@@ -125,26 +119,25 @@ package dung.dung.dung.core
 						}
 					}
 					
-					// create value object with all values mapped above injected!
-					var vo:* = injector.getInstance(dung.voClass);
-					
-					// vo will be injected into view so map as value.
-					injector.mapValue(dung.voClass, vo);
+					// create value object with all values mapped above injected
+					// and map it because it will be injected into view.
+					injector.mapValue(dung.voClass, injector.instantiate(dung.voClass));
 				}
 				
 				// if there are children, map an IChildList with that node
 				// as the dataProvider.
 				if (dung.node.hasOwnProperty(childListNodeName)) {
 					var children:XMLList = dung.node[childListNodeName].children();
-					injector.mapValue(XMLList, children, DATA_PROVIDER);
-					var childList:ChildList = new ChildList();
+					var childList:ChildList = new ChildList(children);
+					// inject injector and nodeMap
 					injector.injectInto(childList);
+					// map as IChildList to be injected into the view.
 					injector.mapValue(IChildList, childList);
 					
 				}
 				
 				// create view object with all dependencies injected.
-				var viewInstance:DisplayObject = injector.getInstance(dung.viewClass)
+				var viewInstance:DisplayObject = injector.instantiate(dung.viewClass)
 				childrenOfType.push(viewInstance);
 			}
 
