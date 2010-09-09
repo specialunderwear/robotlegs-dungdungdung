@@ -1,6 +1,6 @@
 package data
 {	
-	public var xmldata:XML = <root>
+	public var nodemapdata:XML = <root>
 		<assets>
 			<menu>
 				<label>Hi</label>

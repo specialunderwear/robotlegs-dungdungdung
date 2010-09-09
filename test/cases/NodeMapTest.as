@@ -1,11 +1,12 @@
 package cases
 {	
-	import data.xmldata;
 	import flash.display.MovieClip;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import org.flexunit.Assert;
 	import dung.dung.dung.core.NodeMap;
+
+	import data.nodemapdata;
 	
 	public class NodeMapTest
 	{
@@ -22,9 +23,9 @@ package cases
 			nodeMap.mapPath('menu.children.menuitem', DisplayObject);
 			nodeMap.mapPath('pages.page.menuitem', MovieClip)
 			
-			menu = XML(xmldata.assets.menu);
-			menuitems = xmldata.assets.menu.children.menuitem;
-			menuitems2 = xmldata.pages.page.menuitem;
+			menu = XML(nodemapdata.assets.menu);
+			menuitems = nodemapdata.assets.menu.children.menuitem;
+			menuitems2 = nodemapdata.pages.page.menuitem;
 		}
 		
 		[Test]

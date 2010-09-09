@@ -3,6 +3,7 @@ package dung.dung.dung.core
 	import dung.dung.dung.datastructures.Node;
 	import dung.dung.dung.errors.NodeMapConflictError;
 	import dung.dung.dung.errors.NodeMapInvalid;
+	import dung.dung.dung.interfaces.INodeMap;
 	
 	/**
 	 * The NodeMap is used to map xpath like xml
@@ -16,6 +17,7 @@ package dung.dung.dung.core
 	 */
 	
 	public class NodeMap
+		implements INodeMap
 	{
 		//---------------------------------------
 		// PRIVATE VARIABLES
