@@ -18,5 +18,10 @@ package dung.dung.dung.vo
 			this.injector = injector;
 		}
 
+		public function toString():String
+		{
+			return "[Dung viewClass=" + viewClass +" voClass="+ voClass + " + node="+ node + " injector=" + injector + "]";
+		}
+
 	}
 }

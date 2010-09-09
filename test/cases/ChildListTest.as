@@ -8,11 +8,24 @@ package cases
 	import dung.dung.dung.core.ChildList;
 	import dung.dung.dung.interfaces.IChildList;
 	import org.flexunit.Assert;
+	import mocks.ViewMock1;
 	
 	public class ChildListTest
 	{
 		private var injector:IInjector;
 		private var nodeMap:NodeMap;
+		
+		private function mapItems():ChildList
+		{
+			injector.mapValue(XMLList, childlistdata.item, ChildList.DATA_PROVIDER);
+			injector.mapClass(ViewMock1, ViewMock1);
+			nodeMap.mapPath('item', ViewMock1);
+			Assert.assertEquals('4 item nodes should be in the xml', 4, childlistdata.item.length());
+			
+			var childList:ChildList = new ChildList();
+			injector.injectInto(childList);
+			return childList;
+		}
 		
 		[Before]
 		public function runBeforeEachTest():void
@@ -28,10 +41,30 @@ package cases
 		[Test]
 		public function canCreateChildNode():void
 		{
-			var childList:ChildList = new ChildList(childlistdata.item);
+			injector.mapValue(XMLList, childlistdata.item, ChildList.DATA_PROVIDER);
+			var childList:ChildList = new ChildList();
 			injector.injectInto(childList);
 			Assert.assertTrue('injector was set', childList.injector);
 			Assert.assertTrue('nodemap was set', childList.nodeMap);
+		}
+		
+		[Test]
+		public function canEvaluateChildList():void
+		{
+			var childList:ChildList = mapItems();
+			var objects:Array = childList.children();
+			Assert.assertEquals('4 children should be created', 4, objects.length);
+		}
+		
+		[Test]
+		public function childListAreInjectedWhenANodeHasChildren():void
+		{
+			nodeMap.mapPath('item.children.message', ViewMock1);
+			var childList:ChildList = mapItems();
+			var objects:Array = childList.children();
+			for each (var item:ViewMock1 in objects) {
+				Assert.assertEquals('each item has 3 child nodes', 3, item.childList.children().length);
+			}
 		}
 		
 	}

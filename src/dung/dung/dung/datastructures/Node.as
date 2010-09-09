@@ -107,7 +107,6 @@ package dung.dung.dung.datastructures
 		public function resolveByXMLSignature(obj:XML):Node
 		{
 			if (leaf) {
-				trace("Node::resolveByXMLSignature() is leaf", this);
 				return this;
 			} else {
 				var parent:XML = obj.parent();
