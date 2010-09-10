@@ -10,24 +10,69 @@ package dung.dung.dung.core
 	import dung.dung.dung.core.ChildList;
 	import org.robotlegs.core.IInjector;
 	
+	/**
+	 * A lazy list of viewcomponents that are created when accessed.
+	 * 
+	 * If specified so in the nodeMap, a value object will be created and
+	 * all properties marked for injection in the vo Class will be bound from the
+	 * xml.
+	 * 
+	 * @langversion ActionScript 3
+	 * @playerversion Flash 9.0.0
+	 * 
+	 * @see dung.dung.dung.core.NodeMap;
+	 * @author Lars van de Kerkhof
+	 * @since  10.09.2010
+	 */
+	
 	public class ChildList
 		implements IChildList
 	{
+		//---------------------------------------
+		// PUBLIC VARIABLES
+		//---------------------------------------
+		
+		/**
+		 * The name of the node in your xml that designates child objects.
+		 * you must map this name somewhere like this:
+		 * <code>injector.mapValue(String, 'children', ChildList.CHILDLIST_NODE_NAME);</code>
+		 * 
+		 * In this case any xml node named 'children' will trigger the creation of another ChildList.
+		 */
 		public static const CHILDLIST_NODE_NAME:String = 'dung.dung.dung.core.ChildList.childListNodeName';
-		
-		private var _prepared:Boolean = false;
-		
-		protected var _dataProvider:XMLList;
-		protected var _typeDict:Dictionary;
-		
+
 		[Inject(name='dung.dung.dung.core.ChildList.childListNodeName')]
 		public var childListNodeName:String = 'children';
-		
+
+		/** The instance of INodeMap used by ChildList, it is marked for injection. */
 		[Inject]
 		public var nodeMap:INodeMap;
-		
+	
+		/** The instance of the injector, used to create all objects managed by ChildList */
 		[Inject]
 		public var injector:IInjector;
+		
+		//---------------------------------------
+		// PRIVATE & PROTECTED INSTANCE VARIABLES
+		//---------------------------------------
+		
+		// marks that the dataProvider has been prepared and parsed into DungVO objects.
+		private var _prepared:Boolean = false;
+		
+		// The dataProvider that is used to determine which objects to create.
+		protected var _dataProvider:XMLList;
+		// holds the DungVO's sorted by type.
+		protected var _typeDict:Dictionary;
+		
+		//---------------------------------------
+		// CONSTRUCTOR
+		//---------------------------------------
+		
+		/**
+		 * Creates a ChildList and sets the dataProvider.
+		 * @param dataProvider while marked as optional, you must always pass the dataprovider!
+		 * @constructor
+		 */
 		
 		public function ChildList(dataProvider:XMLList=null)
 		{
@@ -35,6 +80,16 @@ package dung.dung.dung.core
 			_typeDict = new Dictionary();
 			_dataProvider = dataProvider;
 		}
+		
+		//---------------------------------------
+		// PROTECTED METHODS
+		//---------------------------------------
+		
+		/**
+		 * When the IChildList methods are accessed, the dataProvider must be parsed
+		 * into DungVO objects, this will sort the object to be created by type.
+		 * @private
+		 */
 		
 		protected function prepareObjects():void
 		{
@@ -56,9 +111,22 @@ package dung.dung.dung.core
 						injector)
 					);
 				}
+				// we don't need the dataProvider anymore.
+				_dataProvider = null;
 				_prepared = true;
 			}
 		}
+
+		//---------------------------------------
+		// PUBLIC METHODS
+		//---------------------------------------
+		
+		/**
+		 * Create an array of objects defined by the dataProvider and add them as
+		 * a child to <code>parent</code>.
+		 * @param parent The DisplayObjectContainer you want the children to be added to.
+		 * @return array of newly created objects as defined by <code>dataProvider</code>.
+		 */
 		
 		public function addChildrenTo(parent:DisplayObjectContainer):Array
 		{
@@ -71,6 +139,14 @@ package dung.dung.dung.core
 			return allChildren;
 		}
 		
+		/**
+		 * Created an array of objects of type <code>type</code> and add them to <code>parent</code>
+		 * as a child.
+		 * @param type The type of the objects you want to select.
+		 * @param parent The DisplayObjectContainer you want the children you selected to be added to.
+		 * @return array of newly created objects of a specific type.
+		 */
+		
 		public function addChildrenOfTypeTo(type:Class, parent:DisplayObjectContainer):Array
 		{
 			prepareObjects();
@@ -82,6 +158,12 @@ package dung.dung.dung.core
 			return childrenOfType;
 		}
 		
+		/**
+		 * Create an array of objects, as defined by the <code>dataProvider</code> and
+		 * return them in an array.
+		 * @return array of newly created objects as defined by <code>dataProvider</code>.
+		 */
+		
 		public function children():Array
 		{
 			prepareObjects();
@@ -92,6 +174,13 @@ package dung.dung.dung.core
 			}
 			return allChildren;
 		}
+		
+		/**
+		 * Created an array of objects of type <code>type</code> and add return them
+		 * in an array.
+		 * @param type The type of the objects you want to select.
+		 * @return array of newly created objects of a specific type. 
+		 */
 		
 		public function childrenOfType(type:Class):Array
 		{

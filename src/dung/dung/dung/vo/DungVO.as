@@ -2,6 +2,17 @@ package dung.dung.dung.vo
 {
 	import org.robotlegs.core.IInjector;
 	
+	/**
+	 * A lighweight value object used to sort
+	 * The to-be-created objects by type.
+	 * 
+	 * @langversion ActionScript 3
+	 * @playerversion Flash 9.0.0
+	 * 
+	 * @author Lars van de Kerkhof
+	 * @since  10.09.2010
+	 */
+	
 	public class DungVO
 	{
 		public var viewClass:Class;
