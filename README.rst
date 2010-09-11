@@ -60,6 +60,7 @@ To setup dungdungdung, you have to create and map some objects::
 
     import org.swiftsuspenders.Injector;
     import dung.dung.dung.core.NodeMap;
+    import dung.dung.dung.interfaces.INodeMap;
     import dung.dung.dung.core.ChildList;
     
     // somewhere in your Context or some other class that has *injector*    
@@ -73,7 +74,7 @@ To setup dungdungdung, you have to create and map some objects::
     // create and map a NodeMap instance, you can also map it as a Singleton if
     // you want.
     var nodeMap:NodeMap = new NodeMap();
-    injector.mapValue(NodeMap, nodeMap);
+    injector.mapValue(INodeMap, nodeMap);
     
     // now we must tell dungdungdung which xml nodes mark a *list*
     // for the above xml *pages* marks a list, but that is the root list, all
@@ -326,5 +327,5 @@ would look like this::
     }
 
 Setter injection is used to parse the anchor inside <url/> and the parsed url
-can be collected through the url getter. You can have all kinds of complex *objects*
+can be collected through the url getter. You can have all kinds of complex *properties*
 this way.
