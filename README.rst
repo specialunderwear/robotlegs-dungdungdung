@@ -34,16 +34,17 @@ is produced by django-easymode::
                         <children>
                             <image>
                                 <description>What a pretty image indeed</description>
-                                <url>prettyimage.jpg</url>
+                                <url><a href="prettyimage.jpg"/></url>
                             </image>
                             <image>
                                 <description>What an ugly image indeed</description>
-                                <url>uglyimage.jpg</url>
+                                <url><a href="uglyimage.jpg"/></url>
                             </image>
                         </children>
                     </imageviewer>
                 </children>
             </page>
+            <!-- more pages go here -->
         </pages>
     </root>
 
@@ -291,4 +292,39 @@ cast away::
 
 This will not change any of the other pages, because each ChildList uses it's own
 child injector.
-    
+
+properties are either string or XML
+-----------------------------------
+
+Notice that <image/> in the above xml has 2 *properties*; <description/> and <url/>.
+<description/> is a regular string, but for <url/> i chose to use an anchor, because
+when google might index the xml, it will follow the link. If the content of a *property*
+is not just a string, ChildList will map the value as XML, so the ImageViewerItemVO
+would look like this::
+
+    package foo {
+        public class ImageViewerItemVO {
+            
+            private var _url:String;
+            
+            [Inject(name='description')]
+            public var description;
+            
+            // url is injected as XML, not String
+            [Inject(name='url')]
+            public function set urlSink(value:XML):void
+            {
+                // so some more parsing here and bind to _url
+                _url = value.a.@href;
+            }
+            
+            public function get url():String
+            {
+                return _url;
+            }
+        }
+    }
+
+Setter injection is used to parse the anchor inside <url/> and the parsed url
+can be collected through the url getter. You can have all kinds of complex *objects*
+this way.
