@@ -1,7 +1,6 @@
 package cases
 {	
 	import org.robotlegs.adapters.SwiftSuspendersInjector;
-	import org.robotlegs.core.IInjector;
 	import dung.dung.dung.core.NodeMap;
 	import dung.dung.dung.interfaces.INodeMap;
 	import data.childlistdata;
@@ -9,10 +8,11 @@ package cases
 	import dung.dung.dung.interfaces.IChildList;
 	import org.flexunit.Assert;
 	import mocks.ViewMock1;
+	import org.swiftsuspenders.Injector;
 	
 	public class ChildListTest
 	{
-		private var injector:IInjector;
+		private var injector:Injector;
 		private var nodeMap:NodeMap;
 		
 		private function mapItems():ChildList
@@ -31,7 +31,7 @@ package cases
 		{
 			injector = new SwiftSuspendersInjector;
 			nodeMap = new NodeMap();
-			injector.mapValue(IInjector, injector);
+			injector.mapValue(Injector, injector);
 			injector.mapValue(INodeMap, nodeMap);
 			injector.mapClass(IChildList, ChildList);
 			injector.mapValue(String, 'children', ChildList.CHILDLIST_NODE_NAME);

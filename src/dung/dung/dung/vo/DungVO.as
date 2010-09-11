@@ -1,6 +1,6 @@
 package dung.dung.dung.vo
 {
-	import org.robotlegs.core.IInjector;
+	import org.swiftsuspenders.Injector;
 	
 	/**
 	 * A lighweight value object used to sort
@@ -18,9 +18,9 @@ package dung.dung.dung.vo
 		public var viewClass:Class;
 		public var voClass:Class;
 		public var node:XML;
-		public var injector:IInjector;
+		public var injector:Injector;
 		
-		public function DungVO(viewClass:Class, voClass:Class, node:XML, injector:IInjector)
+		public function DungVO(viewClass:Class, voClass:Class, node:XML, injector:Injector)
 		{
 			super();
 			this.viewClass = viewClass;

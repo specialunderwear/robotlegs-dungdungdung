@@ -8,7 +8,7 @@ package dung.dung.dung.core
 	import dung.dung.dung.interfaces.INodeMap;
 	import flash.display.DisplayObject;
 	import dung.dung.dung.core.ChildList;
-	import org.robotlegs.core.IInjector;
+	import org.swiftsuspenders.Injector;
 	
 	/**
 	 * A lazy list of viewcomponents that are created when accessed.
@@ -47,21 +47,21 @@ package dung.dung.dung.core
 		/** The instance of INodeMap used by ChildList, it is marked for injection. */
 		[Inject]
 		public var nodeMap:INodeMap;
-	
+
 		/** The instance of the injector, used to create all objects managed by ChildList */
 		[Inject]
-		public var injector:IInjector;
+		public var injector:Injector;
 		
 		//---------------------------------------
 		// PRIVATE & PROTECTED INSTANCE VARIABLES
 		//---------------------------------------
 		
-		// marks that the dataProvider has been prepared and parsed into DungVO objects.
+		/** @private marks that the dataProvider has been prepared and parsed into DungVO objects. */
 		private var _prepared:Boolean = false;
 		
-		// The dataProvider that is used to determine which objects to create.
+		/** @private The dataProvider that is used to determine which objects to create. */
 		protected var _dataProvider:XMLList;
-		// holds the DungVO's sorted by type.
+		/** @private holds the DungVO's sorted by type. */
 		protected var _typeDict:Dictionary;
 		
 		//---------------------------------------
@@ -216,13 +216,20 @@ package dung.dung.dung.core
 				// if there are children, map an IChildList with that node
 				// as the dataProvider.
 				if (dung.node.hasOwnProperty(childListNodeName)) {
+					
 					var children:XMLList = dung.node[childListNodeName].children();
 					var childList:ChildList = new ChildList(children);
-					// inject injector and nodeMap
-					injector.injectInto(childList);
-					// map as IChildList to be injected into the view.
-					injector.mapValue(IChildList, childList);
+
+					// create chil injector so we can override mappings without
+					// messing up global mappings.
+					var childInjector:Injector = injector.createChildInjector();
+					// remap Injector to use the child injector here.
+					childInjector.mapValue(Injector, childInjector);
+					// inject injector and nodeMap, using the childInjector, which overrides the Injector mapping.
+					childInjector.injectInto(childList);
 					
+					// map as IChildList to be injected into the view, with the normal injector.
+					injector.mapValue(IChildList, childList);
 				}
 				
 				// create view object with all dependencies injected.
