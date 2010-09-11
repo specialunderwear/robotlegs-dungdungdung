@@ -5,6 +5,8 @@ package mocks
 	
 	public class ViewMock1 extends Sprite
 	{
+		[Inject]
+		public var dataProvider:VOMock1;
 		
 		[Inject]
 		public var childList:IChildList;

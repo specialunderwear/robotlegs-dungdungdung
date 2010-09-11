@@ -9,6 +9,8 @@ package cases
 	import org.flexunit.Assert;
 	import mocks.ViewMock1;
 	import org.swiftsuspenders.Injector;
+	import mocks.VOMock1;
+	import mocks.ViewMock2;
 	
 	public class ChildListTest
 	{
@@ -18,7 +20,7 @@ package cases
 		private function mapItems():ChildList
 		{
 			injector.mapClass(ViewMock1, ViewMock1);
-			nodeMap.mapPath('item', ViewMock1);
+			nodeMap.mapPath('item', ViewMock1, VOMock1);
 			Assert.assertEquals('4 item nodes should be in the xml', 4, childlistdata.item.length());
 			
 			var childList:ChildList = new ChildList(childlistdata.item);
@@ -57,11 +59,23 @@ package cases
 		[Test]
 		public function childListAreInjectedWhenANodeHasChildren():void
 		{
-			nodeMap.mapPath('item.children.message', ViewMock1);
+			nodeMap.mapPath('item.children.message', ViewMock2);
 			var childList:ChildList = mapItems();
 			var objects:Array = childList.children();
 			for each (var item:ViewMock1 in objects) {
 				Assert.assertEquals('each item has 3 child nodes', 3, item.childList.children().length);
+			}
+		}
+		
+		[Test]
+		public function valueObjectArePopulated():void
+		{
+			var objects:ChildList = mapItems();
+			for each (var item:ViewMock1 in objects.childrenOfType(ViewMock1)) {
+				trace("ChildListTest::valueObjectArePopulated()", item);
+				Assert.assertTrue(int(Number(item.dataProvider.ammount)) > 3);
+				Assert.assertTrue(int(Number(item.dataProvider.ammount)) < 41);
+				Assert.assertTrue(item.dataProvider.tax.lastIndexOf('%') != -1);
 			}
 		}
 		
