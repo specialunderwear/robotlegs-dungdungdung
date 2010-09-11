@@ -48,9 +48,4 @@ is produced by django-easymode::
         </pages>
     </root>
 
-dungdungdung is a work in progress.
-
-It will be the actionscript bindings for the django-easymode.
-
-
- 
+More soon.
