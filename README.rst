@@ -278,7 +278,7 @@ cast away::
             [PostConstruct]
             public function initialize():void
             {
-                if (page.pageName == 'veryspecial){
+                if (page.pageName == 'veryspecial'){
                     // we haven't accessed childList yet, so the objects are not yet constructed.
                     var injector:Injector = (childList as ChildList).injector;
                     // use a special textblock for this page only
