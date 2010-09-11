@@ -5,9 +5,7 @@ get started
 -----------
 
 Create an xml with a structure similar to this one. This is the type of xml that
-is produced by django-easymode.
-
-.. code-block:: xml
+is produced by django-easymode::
 
     <root>
         <pages>
