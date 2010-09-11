@@ -293,8 +293,8 @@ cast away::
 This will not change any of the other pages, because each ChildList uses it's own
 child injector.
 
-properties are either string or XML
------------------------------------
+properties are injected either as String or XML
+-----------------------------------------------
 
 Notice that <image/> in the above xml has 2 *properties*; <description/> and <url/>.
 <description/> is a regular string, but for <url/> i chose to use an anchor, because
