@@ -72,7 +72,6 @@ package cases
 		{
 			var objects:ChildList = mapItems();
 			for each (var item:ViewMock1 in objects.childrenOfType(ViewMock1)) {
-				trace("ChildListTest::valueObjectArePopulated()", item);
 				Assert.assertTrue(int(Number(item.dataProvider.ammount)) > 3);
 				Assert.assertTrue(int(Number(item.dataProvider.ammount)) < 41);
 				Assert.assertTrue(item.dataProvider.tax.lastIndexOf('%') != -1);
