@@ -37,7 +37,6 @@ package cases
 			nodeMap = new NodeMap();
 			injector.mapValue(Injector, injector);
 			injector.mapValue(INodeMap, nodeMap);
-			injector.mapClass(VOMock1, VOMock1);
 			injector.mapClass(ViewMock2, ViewMock2);
 			injector.mapClass(IChildList, ChildList);
 			injector.mapValue(String, 'children', ChildList.CHILDLIST_NODE_NAME);
