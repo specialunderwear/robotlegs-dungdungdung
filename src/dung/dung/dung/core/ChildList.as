@@ -210,6 +210,8 @@ package dung.dung.dung.core
 					
 					// create value object with all values mapped above injected
 					// and map it because it will be injected into view.
+					// must use instantiate for the VO creation, because we are
+					// mapping the same Class with mapValue!!
 					injector.mapValue(dung.voClass, injector.instantiate(dung.voClass));
 				}
 				
@@ -233,7 +235,7 @@ package dung.dung.dung.core
 				}
 				
 				// create view object with all dependencies injected.
-				var viewInstance:DisplayObject = injector.instantiate(dung.viewClass)
+				var viewInstance:DisplayObject = injector.getInstance(dung.viewClass)
 				childrenOfType.push(viewInstance);
 			}
 

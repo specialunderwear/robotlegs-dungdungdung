@@ -7,5 +7,10 @@ package mocks
 		
 		[Inject(name='tax')]
 		public var tax:String;
+		
+		public function toString():String
+		{
+			return "[VOMock1 ammount="+ammount+" tax="+tax+"]";
+		}
 	}
 }

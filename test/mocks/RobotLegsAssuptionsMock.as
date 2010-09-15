@@ -9,6 +9,10 @@ package mocks
 		
 		[Inject(name='lmao')]
 		public var lmao:String = 'lmao';
-		
+	
+		public function toString():String
+		{
+			return "[RobotLegsAssuptionsMock moo='" + moo +"' lmao='"+ lmao +"']";
+		}
 	}
 }

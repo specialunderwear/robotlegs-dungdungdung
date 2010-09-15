@@ -1,6 +1,5 @@
 package cases
 {	
-	import org.robotlegs.adapters.SwiftSuspendersInjector;
 	import mocks.RobotLegsAssuptionsMock;
 	import org.flexunit.Assert;
 	import org.swiftsuspenders.InjectionConfig;
@@ -14,7 +13,7 @@ package cases
 		[Before]
 		public function init():void
 		{
-			injector = new SwiftSuspendersInjector;
+			injector = new Injector;
 		}
 		
 		[After]
@@ -27,8 +26,8 @@ package cases
 		[Test]
 		public function mappingsDefinedInParentInjectorAfterChildInjectorWasCreatedWork():void
 		{
-			var rule:InjectionConfig = injector.mapClass(RobotLegsAssuptionsMock, RobotLegsAssuptionsMock);
 			var childInjector:Injector = injector.createChildInjector();
+			var rule:InjectionConfig = injector.mapClass(RobotLegsAssuptionsMock, RobotLegsAssuptionsMock);
 			rule.setInjector(childInjector);
 			childInjector.mapValue(String, 'haha', 'moo');
 			
@@ -38,6 +37,25 @@ package cases
 			
 			Assert.assertEquals('It should say hah', 'haha', mock.moo);
 			Assert.assertEquals('It should say whut', 'whut', mock.lmao);
+		}
+		
+		[Test]
+		public function getInstanceReturnsANewInstanceIfNotSingleTon():void
+		{
+			injector.mapValue(String, 'whut', 'lmao')
+			injector.mapValue(String, 'haha', 'moo');
+			injector.mapClass(RobotLegsAssuptionsMock, RobotLegsAssuptionsMock);
+			
+			var mock:RobotLegsAssuptionsMock = injector.getInstance(RobotLegsAssuptionsMock);
+			var differentMock:RobotLegsAssuptionsMock = injector.getInstance(RobotLegsAssuptionsMock);
+			
+			Assert.assertFalse('The objects should not be equal under strict equality', mock === differentMock);
+			
+			injector.mapSingleton(RobotLegsAssuptionsMock);
+			mock = injector.getInstance(RobotLegsAssuptionsMock);
+			differentMock = injector.getInstance(RobotLegsAssuptionsMock);
+
+			Assert.assertTrue('The objects should now be equal under strict equality', mock === differentMock);
 		}
 
 	}
