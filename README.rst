@@ -93,16 +93,15 @@ like to have created for each xml node. You have to map the *objects* in the xml
     nodeMap.mapPath('imageviewer', ImageViewer);
     nodeMap.mapPath('imageviewer.children.image', ImageViewerItem, ImageViewerItemVO);
     
-    // You've got to do your class mapping yourself
+    // You've got to do your view mapping yourself.
+    // You don't have to map the value objects though ...
     injector.mapClass(Page, Page);
-    injector.mapClass(PageVO, PageVO);
     injector.mapClass(TextBlock, TextBlock);
-    injector.mapClass(TextBlockVO, TextBlockVO);
     injector.mapClass(ImageViewer, ImageViewer);
     injector.mapClass(ImageViewerItem, ImageViewerItem);
-    injector.mapClass(ImageViewerItemVO, ImageViewerItemVO);
     
     // add mediator maps if you need them.
+    ...
     
 Now dungdungdung knows that when a <page/> node is encountered, it should create
 a Page view component and a PageVO value object. All the *properties* inside the
@@ -292,7 +291,10 @@ cast away::
     }
 
 This will not change any of the other pages, because each ChildList uses it's own
-child injector.
+child injector. You can override view mappings, but not value object mappings.
+This is because the value object is created using injector.instantiate and the view
+component using injector.getInstance. It would also be very silly to override the
+value object because it's just a bunch of properties ...
 
 properties are injected either as String or XML
 -----------------------------------------------
