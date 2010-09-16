@@ -1,7 +1,7 @@
 package dung.dung.dung.errors
 {
 	/**
-	 * Throws when calls to NodeMap.mapPath are in conflict
+	 * Thrown when calls to <code>NodeMap.mapPath</code> are in conflict
 	 * or ambiguous (not specific enough).
 	 * 
 	 * @langversion ActionScript 3

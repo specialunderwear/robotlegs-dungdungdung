@@ -13,7 +13,7 @@ package dung.dung.dung.core
 	/**
 	 * A lazy list of viewcomponents that are created when accessed.
 	 * 
-	 * If specified so in the nodeMap, a value object will be created and
+	 * If specified so in the <code>nodeMap</code>, a value object will be created and
 	 * all properties marked for injection in the vo Class will be bound from the
 	 * xml.
 	 * 
@@ -35,12 +35,13 @@ package dung.dung.dung.core
 		/**
 		 * The name of the node in your xml that designates child objects.
 		 * you must map this name somewhere like this:
-		 * <code>injector.mapValue(String, 'children', ChildList.CHILDLIST_NODE_NAME);</code>
+		 * <pre>injector.mapValue(String, 'children', ChildList.CHILDLIST_NODE_NAME);</pre>
 		 * 
 		 * In this case any xml node named 'children' will trigger the creation of another ChildList.
 		 */
 		public static const CHILDLIST_NODE_NAME:String = 'dung.dung.dung.core.ChildList.childListNodeName';
 
+		/** @private */
 		[Inject(name='dung.dung.dung.core.ChildList.childListNodeName')]
 		public var childListNodeName:String = 'children';
 
@@ -122,7 +123,7 @@ package dung.dung.dung.core
 		//---------------------------------------
 		
 		/**
-		 * Create an array of objects defined by the dataProvider and add them as
+		 * Creates an array of objects defined by the dataProvider and add them as
 		 * a child to <code>parent</code>.
 		 * @param parent The DisplayObjectContainer you want the children to be added to.
 		 * @return array of newly created objects as defined by <code>dataProvider</code>.
@@ -140,10 +141,10 @@ package dung.dung.dung.core
 		}
 		
 		/**
-		 * Created an array of objects of type <code>type</code> and add them to <code>parent</code>
+		 * Creates an array of objects of type <code>type</code> and adds them to <code>parent</code>
 		 * as a child.
 		 * @param type The type of the objects you want to select.
-		 * @param parent The DisplayObjectContainer you want the children you selected to be added to.
+		 * @param parent The <code>DisplayObjectContainer</code> you want the children you selected to be added to.
 		 * @return array of newly created objects of a specific type.
 		 */
 		
@@ -159,8 +160,8 @@ package dung.dung.dung.core
 		}
 		
 		/**
-		 * Create an array of objects, as defined by the <code>dataProvider</code> and
-		 * return them in an array.
+		 * Creates an array of objects, as defined by the <code>dataProvider</code> and
+		 * returns them in an array.
 		 * @return array of newly created objects as defined by <code>dataProvider</code>.
 		 */
 		
@@ -176,7 +177,7 @@ package dung.dung.dung.core
 		}
 		
 		/**
-		 * Created an array of objects of type <code>type</code> and add return them
+		 * Creates an array of objects of type <code>type</code> and returns them
 		 * in an array.
 		 * @param type The type of the objects you want to select.
 		 * @return array of newly created objects of a specific type. 

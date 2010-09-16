@@ -13,7 +13,7 @@ package dung.dung.dung.datastructures
 	 * 
 	 * @author Lars van de Kerkhof
 	 * @since  08.09.2010
-	 * @see easymode.datastructures.NodeMap;
+	 * @see dung.dung.dung.datastructures.NodeMap;
 	 */
 	
 	public final class Node
@@ -22,15 +22,23 @@ package dung.dung.dung.datastructures
 		//---------------------------------------
 		// PUBLIC VARIABLES
 		//---------------------------------------
+		/** 
+		 * will be true when this is a node that contains a non <code>null</code>
+		 * <code>viewClass</code> and <code>voClass</code>.
+		 */
 		public var leaf:Boolean = false;
+		/** The view class that ia mapped by the node. */
 		public var viewClass:Class;
+		/** The vo class mapped by the node. */
 		public var voClass:Class;
 		
 		//---------------------------------------
 		// PRIVATE VARIABLES
 		//---------------------------------------
 		
+		/** @private */
 		private var _nodes:Object;
+		/** @private */
 		private var _numNodes:uint;
 		
 		//---------------------------------------
@@ -80,7 +88,7 @@ package dung.dung.dung.datastructures
 		}
 		
 		/**
-		 * Retrieves a subnode by a certain name, but if it doesn't exist yet.
+		 * Retrieves a subnode by a certain name, but if it doesn't exist yet,
 		 * the node will be created.
 		 * @param name The name of the node.
 		 * @return Node 
@@ -101,7 +109,8 @@ package dung.dung.dung.datastructures
 		/**
 		 * Returns the node identified by a piece of xml.
 		 * @param obj the xml that identifies the node.
-		 * @return Node 
+		 * @return Node
+		 * @throws NodeMapInvalid when the xml does not seem to map to a node.
 		 */
 		
 		public function resolveByXMLSignature(obj:XML):Node

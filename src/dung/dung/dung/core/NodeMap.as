@@ -6,7 +6,7 @@ package dung.dung.dung.core
 	import dung.dung.dung.interfaces.INodeMap;
 	
 	/**
-	 * The NodeMap is used to map xpath like xml
+	 * The <code>NodeMap</code> is used to map xpath like xml
 	 * selectors to viewComponents + value objects.
 	 * 
 	 * @langversion ActionScript 3
@@ -48,13 +48,13 @@ package dung.dung.dung.core
 		/**
 		 * Adds a rule that associates a node in the xml with a view component and a value object.
 		 * 
-		 * @param rule a xpath like pattern: 'node.subnode.etc' enough to uniquely identify 
+		 * @param rule an xpath like pattern: 'node.subnode.etc' enough to uniquely identify 
 		 * a node in an xml tree.
 		 * @param viewComponentClass The class of the viewcomponent that should be created when a node
 		 * matched by <code>rule</code> is encountered in the xml.
-		 * @param valueObjectClass The class of the valueobject that should be created when a node
+		 * @param valueObjectClass The class of the value object that should be created when a node
 		 * matched by <code>rule</code> is encountered in the xml; the direct children of this node
-		 * will be bound to the valueobject using <code>mapValue(String, childnode, childnode.name())</code>.
+		 * will be bound to the valueobject using <code>mapValue(String, childnode, childnode.name());</code>
 		 * @throws NodeMapConflictError when 2 rules would conflict or shadow eachother.
 		 */
 		
