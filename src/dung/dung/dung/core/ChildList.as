@@ -17,6 +17,15 @@ package dung.dung.dung.core
 	 * all properties marked for injection in the vo Class will be bound from the
 	 * xml.
 	 * 
+	 * When manually constructing a <code>ChildList</code>, you must pass an <code>XMLList</code>
+	 * to the constructor, and after that inject dependencies:
+	 * <pre>
+	 * var c:IChildList = new ChildList(<root><a/><b/></root>.children());
+	 * injector.injectInto(c);
+	 * </pre>
+	 * 
+	 * Only then, the object is ready for use.
+	 * 
 	 * @langversion ActionScript 3
 	 * @playerversion Flash 9.0.0
 	 * 
