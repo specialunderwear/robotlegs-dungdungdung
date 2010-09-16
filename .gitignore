@@ -1,7 +1,10 @@
 *.swf
 *.log
 *.cache
-lib
-Easymode.as
-EasymodeContext.as
-easymode/view
+lib/robotlegs
+lib/SwiftSuspenders
+bin/dungdungdung.swc
+bin/dungdungdung.swc.cache
+bin/testsuite.swf
+bin/testsuite.swf.cache
+docs
