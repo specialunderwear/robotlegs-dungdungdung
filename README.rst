@@ -296,7 +296,7 @@ This is because the value object is created using injector.instantiate and the v
 component using injector.getInstance. It would also be very silly to override the
 value object because it's just a bunch of properties ...
 
-properties are injected either as String or XML
+Properties are injected either as String or XML
 -----------------------------------------------
 
 Notice that <image/> in the above xml has 2 *properties*; <description/> and <url/>.
@@ -331,3 +331,13 @@ would look like this::
 Setter injection is used to parse the anchor inside <url/> and the parsed url
 can be collected through the url getter. You can have all kinds of complex *properties*
 this way.
+
+How to build
+------------
+
+1. Make sure to have mxmlc and compc in your path.
+2. cd to the robotlegs-dungdungdung directory
+3. type *make*
+
+Now you will have and swc and an swf in your *bin* directory as well as the asdocs
+built into the docs directory.
