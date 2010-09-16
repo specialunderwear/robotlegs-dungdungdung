@@ -3,8 +3,8 @@
 *.cache
 lib/robotlegs
 lib/SwiftSuspenders
-bin/dungdungdung.swc
-bin/dungdungdung.swc.cache
+bin/dungdungdung*.swc
+bin/dungdungdung*.swc.cache
 bin/testsuite.swf
 bin/testsuite.swf.cache
 docs
