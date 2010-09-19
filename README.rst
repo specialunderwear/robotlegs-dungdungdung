@@ -355,6 +355,8 @@ built into the docs directory.
 License
 =======
 
+If not otherwise specified, files in this project fall under the following license::
+
     Dungdungdung, object factory and databinding.
     Copyright (C) 2010  Lars van de Kerkhof
 
