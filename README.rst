@@ -4,7 +4,9 @@ Dungdungdung object factory and databinding.
 Dungdungdung implements actionscript bindings for 
 `django-easymode <http://packages.python.org/django-easymode/>`_. It combines 
 databinding and object creation by implementing a map from XML to actionscript
-objects.
+objects. While it is specifically designed to work with the XML outputted by
+django-easymode, it can be used with any backend, as long as a specific structure
+of XML is maintained.
 
 XML structure
 -------------
