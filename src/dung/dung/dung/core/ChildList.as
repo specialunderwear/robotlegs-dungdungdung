@@ -245,7 +245,7 @@ package dung.dung.dung.core
 				}
 				
 				// create view object with all dependencies injected.
-				var viewInstance:DisplayObject = injector.getInstance(dung.viewClass)
+				var viewInstance:DisplayObject = injector.getInstance(dung.viewClass);
 				childrenOfType.push(viewInstance);
 			}
 
