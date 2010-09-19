@@ -6,7 +6,10 @@ Dungdungdung implements actionscript bindings for
 databinding and object creation by implementing a map from XML to actionscript
 objects. While it is specifically designed to work with the XML outputted by
 django-easymode, it can be used with any backend, as long as a specific structure
-of XML is maintained.
+of XML is maintained. Dungdungdung uses 
+`Swiftsuspenders <http://github.com/tschneidereit/SwiftSuspenders>`_ for
+`dependency injection <http://c2.com/cgi/wiki?DependencyInjection>`_ which is also
+used in the `robotlegs framework <http://www.robotlegs.org/>`_.
 
 XML structure
 -------------
