@@ -12,6 +12,6 @@ test: test-build
 	open bin/index.html
 
 clean:
-	\rm -fr docs/*
-	\rm bin/dungdungdung*
-	\rm bin/testsuite*
+	-rm -fr docs/*
+	-rm bin/dungdungdung*
+	-rm bin/testsuite*
