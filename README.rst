@@ -103,7 +103,8 @@ like to have created for each xml node. You have to map the *objects* in the xml
     nodeMap.mapPath('imageviewer', ImageViewer);
     nodeMap.mapPath('imageviewer.children.image', ImageViewerItem, ImageViewerItemVO);
     
-    // You've got to do your view mapping yourself.
+    // You've got to do your view mapping yourself, because you 
+    // probably want to map interfaces instead of concrete classes.
     // You don't have to map the value objects though ...
     injector.mapClass(Page, Page);
     injector.mapClass(TextBlock, TextBlock);
