@@ -200,6 +200,33 @@ value object, this is reflected in the mapping which was::
     
     nodeMap.mapPath('imageviewer', ImageViewer);
 
+If you want to, you can also bind the *properties* directly to the view component.
+Just don't declare a view when you map the path and move the properties to the
+view component::
+
+    package foo {
+        public class Page extends Sprite
+        {
+            [Inject(name='name')]
+            public var pageName:String;
+        
+            [Inject(name='title')]
+            public var title:string;
+    
+            [Inject]
+            public var childList:IChildList;
+    
+            [PostConstruct]
+            public function initialize():void
+            {
+                var children:Array = childList.addChildrenTo(this);
+                // do some alignment on the children, you have them in an array.
+            }
+        }
+    }
+
+That will also work just fine.
+
 Start up the factory
 --------------------
 

@@ -132,10 +132,10 @@ package dung.dung.dung.core
 		//---------------------------------------
 		
 		/**
-		 * Creates an array of objects defined by the dataProvider and add them as
-		 * a child to <code>parent</code>.
+		 * Returns an array of objects defined by the dataProvider after adding
+		 * them as children to <code>parent</code>.
 		 * @param parent The DisplayObjectContainer you want the children to be added to.
-		 * @return array of newly created objects as defined by <code>dataProvider</code>.
+		 * @return array of objects as defined by <code>dataProvider</code>.
 		 */
 		
 		public function addChildrenTo(parent:DisplayObjectContainer):Array
@@ -150,11 +150,11 @@ package dung.dung.dung.core
 		}
 		
 		/**
-		 * Creates an array of objects of type <code>type</code> and adds them to <code>parent</code>
-		 * as a child.
+		 * Returns an array of objects of type <code>type</code> after adding them
+		 * to <code>parent</code> as children.
 		 * @param type The type of the objects you want to select.
 		 * @param parent The <code>DisplayObjectContainer</code> you want the children you selected to be added to.
-		 * @return array of newly created objects of a specific type.
+		 * @return array of objects of a specific type.
 		 */
 		
 		public function addChildrenOfTypeTo(type:Class, parent:DisplayObjectContainer):Array
@@ -169,9 +169,9 @@ package dung.dung.dung.core
 		}
 		
 		/**
-		 * Creates an array of objects, as defined by the <code>dataProvider</code> and
+		 * Return an array of objects, as defined by the <code>dataProvider</code> and
 		 * returns them in an array.
-		 * @return array of newly created objects as defined by <code>dataProvider</code>.
+		 * @return array of objects as defined by <code>dataProvider</code>.
 		 */
 		
 		public function children():Array
@@ -189,7 +189,7 @@ package dung.dung.dung.core
 		 * Creates an array of objects of type <code>type</code> and returns them
 		 * in an array.
 		 * @param type The type of the objects you want to select.
-		 * @return array of newly created objects of a specific type. 
+		 * @return array of objects of a specific type. 
 		 */
 		
 		public function childrenOfType(type:Class):Array
