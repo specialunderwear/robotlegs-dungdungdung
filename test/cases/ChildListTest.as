@@ -12,6 +12,8 @@ package cases
 	import mocks.ViewMock2;
 	import data.childlistoverridedata;
 	import mocks.ViewMock3;
+	import mocks.VOMock2;
+	import mocks.ViewMock4;
 	
 	public class ChildListTest
 	{
@@ -22,7 +24,8 @@ package cases
 		{
 			injector.mapClass(ViewMock1, ViewMock1);
 			nodeMap.mapPath('item', ViewMock1, VOMock1);
-			nodeMap.mapPath('item.children.message', ViewMock2);
+			nodeMap.mapPath('item.children.message', ViewMock2, VOMock2);
+			nodeMap.mapPath('print', ViewMock4);
 			Assert.assertEquals('4 item nodes should be in the xml', 4, childlistdata.item.length());
 			
 			var childList:ChildList = new ChildList(data);
@@ -38,6 +41,7 @@ package cases
 			injector.mapValue(Injector, injector);
 			injector.mapValue(INodeMap, nodeMap);
 			injector.mapClass(ViewMock2, ViewMock2);
+			injector.mapClass(ViewMock4, ViewMock4);
 			injector.mapClass(IChildList, ChildList);
 			injector.mapValue(String, 'children', ChildList.CHILDLIST_NODE_NAME);
 		}
@@ -95,5 +99,36 @@ package cases
 			}
 		}
 		
+		[Test]
+		public function xmlIsProperlySetInDataProvider():void
+		{
+			var objects:Array = mapItems(childlistdata.item).children();
+			var lastHref:String = "";
+			for each (var item:ViewMock1 in objects) {
+				Assert.assertEquals('each item has 3 child nodes', 3, item.childList.children().length);
+				for each (var vc2:ViewMock2 in item.childList.children()) {
+					Assert.assertTrue('dataProvider of child view should be non null',
+						vc2.dataProvider != null
+					);
+					Assert.assertTrue('dataProvider url has different link for each item',
+						String(vc2.dataProvider.url.a.@href) != lastHref
+					);
+					lastHref = String(vc2.dataProvider.url.a.@href);
+				}
+			}
+			
+		}
+
+		[Test]
+		public function bindDataDirectlyToView():void
+		{
+			var objects:Array = mapItems(childlistdata.children()).childrenOfType(ViewMock4);
+			Assert.assertEquals("There should be one item",
+				1, objects.length
+			);
+			Assert.assertEquals("It should have the text 'Print me'",
+				'Print me', objects[0].print
+			);
+		}
 	}
 }

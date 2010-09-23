@@ -200,23 +200,26 @@ package dung.dung.dung.core
 			
 			// loop though dungs of certain type.
 			for each (var dung:DungVO in _typeDict[type]) {
+				
+				// map properties
+				for each (var childNode:XML in dung.node.children()) {
+
+					// if the node is named whatever childListNodeName is set to,
+					// don't map that for the vo, it goes in the view.
+					if (childNode.name() == childListNodeName) {
+						continue;
+					}
+					
+					// If the node is complex, bind as xml.
+					if (childNode.hasComplexContent()) {
+						injector.mapValue(XML, childNode, childNode.name());
+					} else { // if simple bind as String
+						injector.mapValue(String, childNode.text(), childNode.name())
+					}
+				}
+
 				// create value object defined in dung
 				if (dung.voClass is Class) {
-					for each (var childNode:XML in dung.node.children()) {
-
-						// if the node is named whatever childListNodeName is set to,
-						// don't map that for the vo, it goes in the view.
-						if (childNode.name() == childListNodeName) {
-							continue;
-						}
-						
-						// If the node is complex, bind as xml.
-						if (childNode.hasComplexContent()) {
-							injector.mapValue(XML, childNode, childNode.name());
-						} else { // if simple bind as String
-							injector.mapValue(String, childNode.text(), childNode.name())
-						}
-					}
 					
 					// create value object with all values mapped above injected
 					// and map it because it will be injected into view.
