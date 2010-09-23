@@ -19,6 +19,7 @@ package dung.dung.dung.vo
 		public var voClass:Class;
 		public var node:XML;
 		public var injector:Injector;
+		public var viewInstance:Object;
 		
 		public function DungVO(viewClass:Class, voClass:Class, node:XML, injector:Injector)
 		{
@@ -31,7 +32,9 @@ package dung.dung.dung.vo
 
 		public function toString():String
 		{
-			return "[Dung viewClass=" + viewClass +" voClass="+ voClass + " + node="+ node + " injector=" + injector + "]";
+			return "[Dung viewClass=" + viewClass +" voClass="+ voClass + 
+				" + node="+ node + " viewInstance=" + viewInstance + 
+				" injector=" + injector + "]";
 		}
 
 	}

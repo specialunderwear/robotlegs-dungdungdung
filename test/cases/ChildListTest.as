@@ -130,5 +130,20 @@ package cases
 				'Print me', objects[0].print
 			);
 		}
+		
+		[Test]
+		public function childListOnlyCreatesObjectsOnce():void
+		{
+			var childList:IChildList = mapItems(childlistdata.item);
+			var objects:Array = childList.children();
+			var sameObjects:Array = childList.children();
+			Assert.assertEquals('Accessing childlist twice produces arrays of the same length',
+				objects.length, sameObjects.length
+			);
+			for (var i:int = 0; i < objects.length; i++) {
+				Assert.assertTrue('All arrays produced by subsequent calls to childlist, have the same objects',
+					objects[i] === sameObjects[i])
+			}
+		}
 	}
 }

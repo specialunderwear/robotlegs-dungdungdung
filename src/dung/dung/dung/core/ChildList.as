@@ -200,56 +200,58 @@ package dung.dung.dung.core
 			
 			// loop though dungs of certain type.
 			for each (var dung:DungVO in _typeDict[type]) {
-				
-				// map properties
-				for each (var childNode:XML in dung.node.children()) {
+				// If we allready created the object, return existing instance.
+				if (! dung.viewInstance) {
+					// map properties
+					for each (var childNode:XML in dung.node.children()) {
 
-					// if the node is named whatever childListNodeName is set to,
-					// don't map that for the vo, it goes in the view.
-					if (childNode.name() == childListNodeName) {
-						continue;
+						// if the node is named whatever childListNodeName is set to,
+						// don't map that for the vo, it goes in the view.
+						if (childNode.name() == childListNodeName) {
+							continue;
+						}
+					
+						// If the node is complex, bind as xml.
+						if (childNode.hasComplexContent()) {
+							injector.mapValue(XML, childNode, childNode.name());
+						} else { // if simple bind as String
+							injector.mapValue(String, childNode.text(), childNode.name())
+						}
 					}
+
+					// create value object defined in dung
+					if (dung.voClass is Class) {
 					
-					// If the node is complex, bind as xml.
-					if (childNode.hasComplexContent()) {
-						injector.mapValue(XML, childNode, childNode.name());
-					} else { // if simple bind as String
-						injector.mapValue(String, childNode.text(), childNode.name())
+						// create value object with all values mapped above injected
+						// and map it because it will be injected into view.
+						// must use instantiate for the VO creation, because we are
+						// mapping the same Class with mapValue!!
+						injector.mapValue(dung.voClass, injector.instantiate(dung.voClass));
 					}
-				}
-
-				// create value object defined in dung
-				if (dung.voClass is Class) {
-					
-					// create value object with all values mapped above injected
-					// and map it because it will be injected into view.
-					// must use instantiate for the VO creation, because we are
-					// mapping the same Class with mapValue!!
-					injector.mapValue(dung.voClass, injector.instantiate(dung.voClass));
-				}
 				
-				// if there are children, map an IChildList with that node
-				// as the dataProvider.
-				if (dung.node.hasOwnProperty(childListNodeName)) {
+					// if there are children, map an IChildList with that node
+					// as the dataProvider.
+					if (dung.node.hasOwnProperty(childListNodeName)) {
 					
-					var children:XMLList = dung.node[childListNodeName].children();
-					var childList:ChildList = new ChildList(children);
+						var children:XMLList = dung.node[childListNodeName].children();
+						var childList:ChildList = new ChildList(children);
 
-					// create chil injector so we can override mappings without
-					// messing up global mappings.
-					var childInjector:Injector = injector.createChildInjector();
-					// remap Injector to use the child injector here.
-					childInjector.mapValue(Injector, childInjector);
-					// inject injector and nodeMap, using the childInjector, which overrides the Injector mapping.
-					childInjector.injectInto(childList);
+						// create chil injector so we can override mappings without
+						// messing up global mappings.
+						var childInjector:Injector = injector.createChildInjector();
+						// remap Injector to use the child injector here.
+						childInjector.mapValue(Injector, childInjector);
+						// inject injector and nodeMap, using the childInjector, which overrides the Injector mapping.
+						childInjector.injectInto(childList);
 					
-					// map as IChildList to be injected into the view, with the normal injector.
-					injector.mapValue(IChildList, childList);
-				}
+						// map as IChildList to be injected into the view, with the normal injector.
+						injector.mapValue(IChildList, childList);
+					}
 				
-				// create view object with all dependencies injected.
-				var viewInstance:DisplayObject = injector.getInstance(dung.viewClass);
-				childrenOfType.push(viewInstance);
+					// create view object with all dependencies injected.
+					dung.viewInstance = injector.getInstance(dung.viewClass);
+				}
+				childrenOfType.push(dung.viewInstance);
 			}
 
 			return childrenOfType;
