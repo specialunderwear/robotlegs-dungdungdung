@@ -200,8 +200,8 @@ value object, this is reflected in the mapping which was::
     
     nodeMap.mapPath('imageviewer', ImageViewer);
 
-Bind data directly to a view component
---------------------------------------
+Bind *properties* directly to a view component
+---------------------------------------------
 
 If you want to, you can also bind the *properties* directly to the view component.
 Just don't declare a value object when you map the path and move the properties
