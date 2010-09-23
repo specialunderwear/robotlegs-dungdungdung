@@ -226,6 +226,11 @@ to the view component::
             {
                 var children:Array = childList.addChildrenTo(this);
                 // do some alignment on the children, you have them in an array.
+                // ...
+                
+                // when you are done with the childList, null it so the objects
+                // can be garbage collected.
+                childList = null;
             }
         }
     }
@@ -245,7 +250,7 @@ of those. Setting up the root ChildList works as follows::
     
     // you must pass in an XMLList into a ChildList,
     // in this case select the <pages/> *list*
-    var rootList:ChildList = new ChildList(xml.pages);
+    var rootList:ChildList = new ChildList(xml.pages.children());
     // rootList needs some dependencies
     injector.injectInto(rootList);
     
@@ -256,7 +261,7 @@ dungdungdung creates *lists* not single objects so what you want to do is handle
 the creation of the pages yourself and give each page a rootList::
 
     // inside you Page mediator
-    var pageList:IChildList = new ChildList(pagexml.children);
+    var pageList:IChildList = new ChildList(pagexml.children());
     injector.injectInto(pageList);
     (this.getViewComponent() as Page).childList = pageList;
 
@@ -374,6 +379,14 @@ would look like this::
 Setter injection is used to parse the anchor inside <url/> and the parsed url
 can be collected through the url getter. You can have all kinds of complex *properties*
 this way.
+
+Garbage collection
+------------------
+
+The ChildList keeps a reference to the objects inside it. When you are done with
+the ChildList, make sure you null it, so it will be collected by the garbage
+collector. The view components the ChildList created can then also be cleaned up
+when nolonger nescessary.
 
 How to build
 ------------
