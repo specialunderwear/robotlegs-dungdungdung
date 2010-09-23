@@ -11,6 +11,8 @@ of XML is maintained. Dungdungdung uses
 `dependency injection <http://c2.com/cgi/wiki?DependencyInjection>`_ which is also
 used in the `robotlegs framework <http://www.robotlegs.org/>`_.
 
+The api docs are at http://specialunderwear.github.com/robotlegs-dungdungdung.
+
 XML structure
 -------------
 
