@@ -250,7 +250,7 @@ of those. Setting up the root ChildList works as follows::
     
     // you must pass in an XMLList into a ChildList,
     // in this case select the <pages/> *list*
-    var rootList:ChildList = new ChildList(xml.pages.children());
+    var rootList:ChildList = new ChildList(xml.pages);
     // rootList needs some dependencies
     injector.injectInto(rootList);
     
@@ -261,7 +261,7 @@ dungdungdung creates *lists* not single objects so what you want to do is handle
 the creation of the pages yourself and give each page a rootList::
 
     // inside you Page mediator
-    var pageList:IChildList = new ChildList(pagexml.children());
+    var pageList:IChildList = new ChildList(pagexml);
     injector.injectInto(pageList);
     (this.getViewComponent() as Page).childList = pageList;
 
