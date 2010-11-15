@@ -80,7 +80,7 @@ To setup dungdungdung, you have to create and map some objects::
     // because it uses Injector.createChildInjector which is not declared in
     // IInjector, so we must map it separately.
     // DO NOT MAP THE INJECTOR AS A SINAGLETON, WE NEED LOTS OF INJECTOR INSTANCES!
-    var swiftSuspendersInjector:Injector = injector.getInstance(IInjector) as Injector;
+    var swiftSuspendersInjector:Injector = injector.getInstance(Injector) as Injector;
     injector.mapValue(Injector, swiftSuspendersInjector);
 
     // create and map a NodeMap instance, you can also map it as a Singleton if
