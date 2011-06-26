@@ -9,6 +9,9 @@ package dung.dung.dung.core
 	import flash.display.DisplayObject;
 	import dung.dung.dung.core.ChildList;
 	import org.swiftsuspenders.Injector;
+	import dung.dung.dung.outerspace;
+	import dung.dung.dung.datastructures.ChildListIterator;
+	import dung.dung.dung.interfaces.IChildListIterator;
 	
 	/**
 	 * A lazy list of viewcomponents that are created when accessed.
@@ -164,15 +167,17 @@ package dung.dung.dung.core
 			
 			// loop though dungs of certain type.
 			for each (var dung:DungVO in _typeDict[type]) {
-				childrenOfType.push(objectDefinedBy(dung));
+				childrenOfType.push(outerspace::objectDefinedBy(dung));
 			}
 
 			return childrenOfType;
 		}
 		
-		public function iteratorForType():void
+		public function iteratorForType(type:Class):IChildListIterator
 		{
+			prepareObjects();
 			
+			return new ChildListIterator(this, this._typeDict[type]);
 		}
 		
 		//---------------------------------------
@@ -262,7 +267,7 @@ package dung.dung.dung.core
 		 * @private
 		 */
 		
-		protected function objectDefinedBy(dung:DungVO):Object
+		outerspace function objectDefinedBy(dung:DungVO):Object
 		{
 			// If we allready created the object, return existing instance.
 			if (! dung.viewInstance) {
@@ -277,7 +282,7 @@ package dung.dung.dung.core
 					
 					mapAsStringOrXML(childNode);
 				}
-
+				
 				// create value object defined in dung
 				if (dung.voClass is Class) {
 				

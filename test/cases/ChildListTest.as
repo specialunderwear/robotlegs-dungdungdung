@@ -85,6 +85,17 @@ package cases
 		}
 		
 		[Test]
+		public function iteratorIsSameAsArray():void
+		{
+			var objects:ChildList = mapItems(childlistdata.item);
+			for each (var item:ViewMock1 in objects.iteratorForType(ViewMock1)) {
+				Assert.assertTrue(int(Number(item.dataProvider.ammount)) > 3);
+				Assert.assertTrue(int(Number(item.dataProvider.ammount)) < 41);
+				Assert.assertTrue(item.dataProvider.tax.lastIndexOf('%') != -1);
+			}
+		}
+		
+		[Test]
 		public function overrideDoesNotClash():void
 		{
 			var objects:ChildList = mapItems(childlistoverridedata.item);
