@@ -9,6 +9,19 @@ package dung.dung.dung.datastructures
 	/**
 	 * This iterator supports lazy creation of items in dungdungdung.
 	 * 
+	 * Instead of creating an entire array of items, the iterator will create an
+	 * item each tick of the for loop. This means that if you stop the loop before you
+	 * reach the end, you will not have created all items, this way not wasting memory.
+	 * 
+	 * You can also get an item by index:
+	 * 
+	 * <code>childList.iteratorForType(SomeType)[1]</code>
+	 * 
+	 * Will only create the object at index 1.
+	 * 
+	 * Also the iterator is the only way you can delete separate items from the child list,
+	 * by using the delete operator. You can also null them to set them up for garbage collection.
+	 * 
 	 * @langversion ActionScript 3
 	 * @playerversion Flash 9.0.0
 	 * 
@@ -22,6 +35,13 @@ package dung.dung.dung.datastructures
 		protected var _typeArray:Array;
 		protected var _childList:ChildList;
 		
+		/**
+		 * Convert an unknown object into an integer.
+		 * @param name Some object
+		 * @private
+		 * @return int 
+		 */
+		
 		protected function toIndex(name:*):int
 		{
 			return int(Number(name))
@@ -31,11 +51,6 @@ package dung.dung.dung.datastructures
 		{
 			_childList = childList;
 			_typeArray = typeArray;
-		}
-		
-		flash_proxy override function getProperty(name:*):*
-		{
-			return _childList.outerspace::objectDefinedBy(_typeArray[name]);
 		}
 		
 		flash_proxy override function hasProperty(name:*):Boolean
@@ -56,11 +71,25 @@ package dung.dung.dung.datastructures
 			return 0;
 		}
 		
+		/**
+		 * get or create the object uniquely described by the dungvo at the speciafied index.
+		 * @inheritDoc
+		 */
+		
 		flash_proxy override function nextValue(index:int):*
 		{
-			trace("ChildListIterator::nextNameIndex()",  index, _typeArray[index]);
 			return _childList.outerspace::objectDefinedBy(_typeArray[index - 1]);
 		}
+
+		flash_proxy override function getProperty(name:*):*
+		{
+			return _childList.outerspace::objectDefinedBy(_typeArray[name]);
+		}
+		
+		/**
+		 * Set the viewInstance, but leave the rest of the DungVO alone.
+		 * @inheritDoc
+		 */
 		
 		flash_proxy override function setProperty(name:*, value:*):void
 		{
@@ -69,12 +98,7 @@ package dung.dung.dung.datastructures
 		
 		flash_proxy override function deleteProperty(name:*):Boolean
 		{
-			if (toIndex(name) < _typeArray.length) {
-				_typeArray[name].viewInstance = null;
-				return true;
-			}
-			
-			return false;
+			return delete _typeArray[name];
 		}
 
 	}

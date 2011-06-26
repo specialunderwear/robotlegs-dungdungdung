@@ -265,6 +265,24 @@ the creation of the pages yourself and give each page a rootList::
     injector.injectInto(pageList);
     (this.getViewComponent() as Page).childList = pageList;
 
+Or you can just use the iterator, which only creates the objects you request::
+
+    // only create item at index 5
+    var a:MyViewType = childList.iteratorForType(MyViewType)[5];
+    
+    // only create first 8 items.
+    // Note that the 6th item is allready created in the line above so it will return
+    // the same object as is bound to variable 'a'
+    var index:int = 0;
+    for each(instance:MyViewType in childList.iteratorForType(MyViewType)) {
+        if (index < 8) {
+            this.addChild(instance);
+            index++;
+        } else {
+            break;
+        }
+    }
+
 lists are mixed
 ---------------
 
