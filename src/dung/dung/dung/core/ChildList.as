@@ -92,42 +92,6 @@ package dung.dung.dung.core
 		}
 		
 		//---------------------------------------
-		// PROTECTED METHODS
-		//---------------------------------------
-		
-		/**
-		 * When the IChildList methods are accessed, the dataProvider must be parsed
-		 * into DungVO objects, this will sort the object to be created by type.
-		 * @private
-		 */
-		
-		protected function prepareObjects():void
-		{
-			if (! _prepared) {
-				var currentNode:Node;
-
-				for each (var node:XML in _dataProvider) {
-					currentNode = nodeMap.resolve(node);
-
-					// create type dict array
-					if (_typeDict[currentNode.viewClass] === undefined)
-						_typeDict[currentNode.viewClass] = [];
-
-					// push new dung
-					_typeDict[currentNode.viewClass].push(new DungVO(
-						currentNode.viewClass,
-						currentNode.voClass,
-						node,
-						injector)
-					);
-				}
-				// we don't need the dataProvider anymore.
-				_dataProvider = null;
-				_prepared = true;
-			}
-		}
-
-		//---------------------------------------
 		// PUBLIC METHODS
 		//---------------------------------------
 		
@@ -184,7 +148,7 @@ package dung.dung.dung.core
 			}
 			return allChildren;
 		}
-		
+
 		/**
 		 * Creates an array of objects of type <code>type</code> and returns them
 		 * in an array.
@@ -200,63 +164,142 @@ package dung.dung.dung.core
 			
 			// loop though dungs of certain type.
 			for each (var dung:DungVO in _typeDict[type]) {
-				// If we allready created the object, return existing instance.
-				if (! dung.viewInstance) {
-					// map properties
-					for each (var childNode:XML in dung.node.children()) {
-
-						// if the node is named whatever childListNodeName is set to,
-						// don't map that for the vo, it goes in the view.
-						if (childNode.name() == childListNodeName) {
-							continue;
-						}
-					
-						// If the node is complex, bind as xml.
-						if (childNode.hasComplexContent()) {
-							injector.mapValue(XML, childNode, childNode.name());
-						} else { // if simple bind as String
-							injector.mapValue(String, childNode.text(), childNode.name())
-						}
-					}
-
-					// create value object defined in dung
-					if (dung.voClass is Class) {
-					
-						// create value object with all values mapped above injected
-						// and map it because it will be injected into view.
-						// must use instantiate for the VO creation, because we are
-						// mapping the same Class with mapValue!!
-						injector.mapValue(dung.voClass, injector.instantiate(dung.voClass));
-					}
-				
-					// if there are children, map an IChildList with that node
-					// as the dataProvider.
-					if (dung.node.hasOwnProperty(childListNodeName)) {
-					
-						var children:XMLList = dung.node[childListNodeName].children();
-						var childList:ChildList = new ChildList(children);
-
-						// create chil injector so we can override mappings without
-						// messing up global mappings.
-						var childInjector:Injector = injector.createChildInjector();
-						// remap Injector to use the child injector here.
-						childInjector.mapValue(Injector, childInjector);
-						// inject injector and nodeMap, using the childInjector, which overrides the Injector mapping.
-						childInjector.injectInto(childList);
-					
-						// map as IChildList to be injected into the view, with the normal injector.
-						injector.mapValue(IChildList, childList);
-					}
-				
-					// create view object with all dependencies injected.
-					dung.viewInstance = injector.getInstance(dung.viewClass);
-				}
-				childrenOfType.push(dung.viewInstance);
+				childrenOfType.push(objectDefinedBy(dung));
 			}
 
 			return childrenOfType;
 		}
-	  
+		
+		public function iteratorForType():void
+		{
+			
+		}
+		
+		//---------------------------------------
+		// PRIVATE & PROTECTED METHODS
+		//---------------------------------------
+		
+		/**
+		 * When the IChildList methods are accessed, the dataProvider must be parsed
+		 * into DungVO objects, this will sort the objects to be created by type.
+		 * @private
+		 */
+		
+		protected function prepareObjects():void
+		{
+			if (! _prepared) {
+				var currentNode:Node;
 
+				for each (var node:XML in _dataProvider) {
+					currentNode = nodeMap.resolve(node);
+
+					// create type dict array
+					if (_typeDict[currentNode.viewClass] === undefined)
+						_typeDict[currentNode.viewClass] = [];
+
+					// push new dung
+					_typeDict[currentNode.viewClass].push(new DungVO(
+						currentNode.viewClass,
+						currentNode.voClass,
+						node,
+						injector)
+					);
+				}
+				// we don't need the dataProvider anymore.
+				_dataProvider = null;
+				_prepared = true;
+			}
+		}
+		
+		/**
+		 * Maps the passed node in the injector and automatically selects the correct type.
+		 * 
+		 * Simple nodes will be mapped as string, but XML nodes will be mapped as XML.
+		 * @param childNode A single xml node that should be bound to a VO or view component.
+		 * @private
+		 */
+		
+		protected function mapAsStringOrXML(childNode:XML):void {
+			// If the node is complex, bind as xml.
+			if (childNode.hasComplexContent()) {
+				injector.mapValue(XML, childNode, childNode.name());
+			} else { // if simple bind as String
+				injector.mapValue(String, childNode.text(), childNode.name())
+			}
+		}
+		
+		/**
+		 * Creates a new child list from an <code>XMLList</code> and maps it for injection.
+		 * 
+		 * The <code>ChildList</code> will have it's own injector, so it doesn't matter at all if
+		 * you override mappings when inside a viewcomponent being constucted by the childlist.
+		 * @param children The <code>XMLList</code> that contains all the data needed to construct the objects as defined in the <code>NodeMap</code>.
+		 * @private
+		 */
+		
+		protected function mapChildListFrom(children:XMLList):void
+		{
+			var childList:ChildList = new ChildList(children);
+
+			// create child injector so we can override mappings without
+			// messing up global mappings.
+			var childInjector:Injector = injector.createChildInjector();
+			// remap Injector to use the child injector here.
+			childInjector.mapValue(Injector, childInjector);
+			// inject injector and nodeMap, using the childInjector, which overrides the Injector mapping.
+			childInjector.injectInto(childList);
+		
+			// map as IChildList to be injected into the view, with the normal injector.
+			injector.mapValue(IChildList, childList);
+		}
+		
+		/**
+		 * Returns the object/viewCompenent defined by the data in the <code>dung</code> parameter.
+		 * Such an object is mapped in the <code>NodeMap</code>.
+		 * 
+		 * If the object does not yet exist, it will be created.
+		 * @param dung The value object that holds all data relevant for constructing an object mapped in <code>NodeMap</code>.
+		 * @private
+		 */
+		
+		protected function objectDefinedBy(dung:DungVO):Object
+		{
+			// If we allready created the object, return existing instance.
+			if (! dung.viewInstance) {
+				// map properties
+				for each (var childNode:XML in dung.node.children()) {
+
+					// if the node is named whatever childListNodeName is set to,
+					// don't map that for the vo, it goes in the view.
+					if (childNode.name() == childListNodeName) {
+						continue;
+					}
+					
+					mapAsStringOrXML(childNode);
+				}
+
+				// create value object defined in dung
+				if (dung.voClass is Class) {
+				
+					// create value object with all values mapped above injected
+					// and map it because it will be injected into view.
+					// must use instantiate for the VO creation, because we are
+					// mapping the same Class with mapValue!!
+					injector.mapValue(dung.voClass, injector.instantiate(dung.voClass));
+				}
+			
+				// if there are children, map an IChildList with that node
+				// as the dataProvider.
+				if (dung.node.hasOwnProperty(childListNodeName)) {
+				
+					var children:XMLList = dung.node[childListNodeName].children();
+					mapChildListFrom(children);
+				}
+			
+				// create view object with all dependencies injected.
+				dung.viewInstance = injector.getInstance(dung.viewClass);
+			}
+			return dung.viewInstance;
+		}
 	}
 }
