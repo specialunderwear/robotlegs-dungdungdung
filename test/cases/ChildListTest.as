@@ -97,6 +97,16 @@ package cases
 		}
 		
 		[Test]
+		public function iteratorAllowsDeletionOfItems():void
+		{
+			var objects:ChildList = mapItems(childlistdata.item);
+			Assert.assertEquals("The number of items should be 4", 4, objects.childrenOfType(ViewMock1).length);
+			var iter:IChildListIterator = objects.iteratorForType(ViewMock1);
+			delete iter[1];
+			Assert.assertEquals("The number of items after delting an item should be 3", 3, objects.childrenOfType(ViewMock1).length);
+		}
+		
+		[Test]
 		public function iteratorAllowsSubscriptAccess():void
 		{
 			var objects:ChildList = mapItems(childlistdata.item);
