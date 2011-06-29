@@ -22,6 +22,14 @@ package dung.dung.dung.datastructures
 	 * Also the iterator is the only way you can delete separate items from the child list,
 	 * by using the delete operator. You can also null them to set them up for garbage collection.
 	 * 
+	 * <pre>
+	 * <code>
+	 * var iter:IChildListIterator = childList.iteratorForType(ViewMock1);
+	 * iter[0] = null;
+	 * delete iter[2];
+	 * </code>
+	 * 
+	 * </pre>
 	 * @langversion ActionScript 3
 	 * @playerversion Flash 9.0.0
 	 * 
