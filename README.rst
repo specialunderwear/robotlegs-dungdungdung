@@ -402,9 +402,19 @@ Garbage collection
 ------------------
 
 The ChildList keeps a reference to the objects inside it. When you are done with
-the ChildList, make sure you null it, so it will be collected by the garbage
+the ChildList, make sure you null it, so it can be collected by the garbage
 collector. The view components the ChildList created can then also be cleaned up
 when nolonger nescessary.
+
+It is also possible to clear the reference the childlist holds using the iterator::
+
+    var iter:IChildListIterator = objects.iteratorForType(ViewMock1);
+    iter[0] = null;
+
+Or even delete items from the childlist entirely::
+
+    var iter:IChildListIterator = objects.iteratorForType(ViewMock1);
+    delete iter[0];
 
 How to build
 ------------
