@@ -14,6 +14,7 @@ package cases
 	import mocks.ViewMock3;
 	import mocks.VOMock2;
 	import mocks.ViewMock4;
+	import dung.dung.dung.interfaces.IChildListIterator;
 	
 	public class ChildListTest
 	{
@@ -93,6 +94,15 @@ package cases
 				Assert.assertTrue(int(Number(item.dataProvider.ammount)) < 41);
 				Assert.assertTrue(item.dataProvider.tax.lastIndexOf('%') != -1);
 			}
+		}
+		
+		[Test]
+		public function iteratorAllowsSubscriptAccess():void
+		{
+			var objects:ChildList = mapItems(childlistdata.item);
+			var iter:IChildListIterator = objects.iteratorForType(ViewMock1);
+			Assert.assertTrue(int(Number(iter[1].dataProvider.ammount)) == 6);
+			Assert.assertTrue(int(Number(iter[3].dataProvider.ammount)) == 40);
 		}
 		
 		[Test]
