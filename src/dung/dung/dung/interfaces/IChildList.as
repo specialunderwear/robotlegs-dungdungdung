@@ -1,6 +1,7 @@
 package dung.dung.dung.interfaces
 {	
 	import flash.display.DisplayObjectContainer;
+	import dung.dung.dung.interfaces.IChildListIterator;
 
 	public interface IChildList {
 
@@ -8,6 +9,7 @@ package dung.dung.dung.interfaces
 		function addChildrenOfTypeTo(type:Class, parent:DisplayObjectContainer):Array;
 		function children():Array;
 		function childrenOfType(type:Class):Array;
+		function iteratorForType(type:Class):IChildListIterator;
 	}
 
 }

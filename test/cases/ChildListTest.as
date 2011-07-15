@@ -15,13 +15,14 @@ package cases
 	import mocks.VOMock2;
 	import mocks.ViewMock4;
 	import dung.dung.dung.interfaces.IChildListIterator;
+	import dung.dung.dung.createChildList;
 	
 	public class ChildListTest
 	{
 		private var injector:Injector;
 		private var nodeMap:NodeMap;
 		
-		private function mapItems(data:XMLList):ChildList
+		private function mapItems(data:XMLList):IChildList
 		{
 			injector.mapClass(ViewMock1, ViewMock1);
 			nodeMap.mapPath('item', ViewMock1, VOMock1);
@@ -29,9 +30,7 @@ package cases
 			nodeMap.mapPath('print', ViewMock4);
 			Assert.assertEquals('4 item nodes should be in the xml', 4, childlistdata.item.length());
 			
-			var childList:ChildList = new ChildList(data);
-			injector.injectInto(childList);
-			return childList;
+			return createChildList(data, injector);
 		}
 		
 		[Before]
@@ -59,7 +58,7 @@ package cases
 		[Test]
 		public function canEvaluateChildList():void
 		{
-			var childList:ChildList = mapItems(childlistdata.children());
+			var childList:IChildList = mapItems(childlistdata.children());
 			var objects:Array = childList.children();
 			Assert.assertEquals('5 children should be created', 5, objects.length);
 		}
@@ -67,7 +66,7 @@ package cases
 		[Test]
 		public function childListAreInjectedWhenANodeHasChildren():void
 		{
-			var childList:ChildList = mapItems(childlistdata.item);
+			var childList:IChildList = mapItems(childlistdata.item);
 			var objects:Array = childList.children();
 			for each (var item:ViewMock1 in objects) {
 				Assert.assertEquals('each item has 3 child nodes', 3, item.childList.children().length);
@@ -77,7 +76,7 @@ package cases
 		[Test]
 		public function valueObjectArePopulated():void
 		{
-			var objects:ChildList = mapItems(childlistdata.children());
+			var objects:IChildList = mapItems(childlistdata.children());
 			for each (var item:ViewMock1 in objects.childrenOfType(ViewMock1)) {
 				Assert.assertTrue(int(Number(item.dataProvider.ammount)) > 3);
 				Assert.assertTrue(int(Number(item.dataProvider.ammount)) < 41);
@@ -88,7 +87,7 @@ package cases
 		[Test]
 		public function iteratorIsSameAsArray():void
 		{
-			var objects:ChildList = mapItems(childlistdata.children());
+			var objects:IChildList = mapItems(childlistdata.children());
 			for each (var item:ViewMock1 in objects.iteratorForType(ViewMock1)) {
 				Assert.assertTrue(int(Number(item.dataProvider.ammount)) > 3);
 				Assert.assertTrue(int(Number(item.dataProvider.ammount)) < 41);
@@ -99,7 +98,7 @@ package cases
 		[Test]
 		public function iteratorAllowsDeletionOfItems():void
 		{
-			var objects:ChildList = mapItems(childlistdata.children());
+			var objects:IChildList = mapItems(childlistdata.children());
 			Assert.assertEquals("The number of items should be 4", 4, objects.childrenOfType(ViewMock1).length);
 			var iter:IChildListIterator = objects.iteratorForType(ViewMock1);
 			delete iter[1];
@@ -111,7 +110,7 @@ package cases
 		[Test]
 		public function iteratorAllowsSubscriptAccess():void
 		{
-			var objects:ChildList = mapItems(childlistdata.children());
+			var objects:IChildList = mapItems(childlistdata.children());
 			var iter:IChildListIterator = objects.iteratorForType(ViewMock1);
 			Assert.assertTrue(int(Number(iter[1].dataProvider.ammount)) == 6);
 			Assert.assertTrue(int(Number(iter[3].dataProvider.ammount)) == 40);
@@ -120,7 +119,7 @@ package cases
 		[Test]
 		public function overrideDoesNotClash():void
 		{
-			var objects:ChildList = mapItems(childlistoverridedata.item);
+			var objects:IChildList = mapItems(childlistoverridedata.item);
 			for each (var item:ViewMock1 in objects.childrenOfType(ViewMock1)) {
 				// in ViewMock1 we have mapped ViewMock2 to ViewMock3 only if ammount == 9
 				if (item.dataProvider.ammount == '9') {

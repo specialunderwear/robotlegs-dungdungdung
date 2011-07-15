@@ -244,15 +244,17 @@ Above is explained what happens when dungdungdung get's going. To start it up,
 you have to load your xml and set up the root ChildList. dungdungdung does not
 load xml for you, there are millions of things that load out there, so use one
 of those. Setting up the root ChildList works as follows::
-
+    
+    // import childList factory function.
+    import dung.dung.dung.createChildList;
+	
     // lets say your xml loaded and inside a local variable name xml
     var xml:XML = // whatever
     
     // you must pass in an XMLList into a ChildList,
     // in this case select the <pages/> *list*
-    var rootList:ChildList = new ChildList(xml.pages);
-    // rootList needs some dependencies
-    injector.injectInto(rootList);
+    
+    var rootList:IChildList = createChildList(xml.pages, injector);
     
     rootList.addChildrenTo(contextView);
 
@@ -261,8 +263,7 @@ dungdungdung creates *lists* not single objects so what you want to do is handle
 the creation of the pages yourself and give each page a rootList::
 
     // inside you Page mediator
-    var pageList:IChildList = new ChildList(pagexml);
-    injector.injectInto(pageList);
+    var pageList:IChildList = createChildList(pagexml, injector);
     (this.getViewComponent() as Page).childList = pageList;
 
 Or you can just use the iterator, which only creates the objects you request::
