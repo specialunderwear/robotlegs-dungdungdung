@@ -76,6 +76,8 @@ package dung.dung.dung.core
 		protected var _dataProvider:XMLList;
 		/** @private holds the DungVO's sorted by type. */
 		protected var _typeDict:Dictionary;
+		/** @private holds the DungVO's in the original order */
+		protected var _allDungs:Array;
 		
 		//---------------------------------------
 		// CONSTRUCTOR
@@ -91,6 +93,7 @@ package dung.dung.dung.core
 		{
 			super();
 			_typeDict = new Dictionary();
+			_allDungs = [];
 			_dataProvider = dataProvider;
 		}
 		
@@ -109,9 +112,9 @@ package dung.dung.dung.core
 		{
 			prepareObjects();
 			
-			var allChildren:Array = [];
-			for (var key:* in _typeDict) {
-				allChildren = allChildren.concat( this.addChildrenOfTypeTo(key, parent) );
+			var allChildren:Array = children();
+			for each (var child:DisplayObject in allChildren) {
+				parent.addChild(child);
 			}
 			return allChildren;
 		}
@@ -146,8 +149,8 @@ package dung.dung.dung.core
 			prepareObjects();
 			
 			var allChildren:Array = [];
-			for (var key:* in _typeDict) {
-				allChildren = allChildren.concat( this.childrenOfType(key) );
+			for each(var dung:DungVO in _allDungs) {
+				allChildren.push( outerspace::objectDefinedBy(dung) )
 			}
 			return allChildren;
 		}
@@ -201,14 +204,17 @@ package dung.dung.dung.core
 					// create type dict array
 					if (_typeDict[currentNode.viewClass] === undefined)
 						_typeDict[currentNode.viewClass] = [];
-
-					// push new dung
-					_typeDict[currentNode.viewClass].push(new DungVO(
+					
+					var dung:DungVO = new DungVO(
 						currentNode.viewClass,
 						currentNode.voClass,
 						node,
-						injector)
+						injector
 					);
+					
+					// push new dung
+					_allDungs.push(dung);
+					_typeDict[currentNode.viewClass].push(dung);
 				}
 				// we don't need the dataProvider anymore.
 				_dataProvider = null;
@@ -305,6 +311,11 @@ package dung.dung.dung.core
 				dung.viewInstance = injector.getInstance(dung.viewClass);
 			}
 			return dung.viewInstance;
+		}
+		
+		outerspace function deleteItemFromAll(dung:DungVO):Boolean
+		{
+			return delete _allDungs[_allDungs.indexOf(dung)];
 		}
 	}
 }
