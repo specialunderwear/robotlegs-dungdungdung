@@ -178,5 +178,16 @@ package cases
 					objects[i] === sameObjects[i])
 			}
 		}
+		
+		[Test]
+		public function childListDoesNotNescessarilyContainDisplayObjects():void
+		{
+			injector.mapClass(VOMock1, VOMock1);
+			nodeMap.mapPath('item', VOMock1);
+			
+			var childList:ChildList = new ChildList(childlistdata.item);
+			injector.injectInto(childList);
+			Assert.assertEquals('The number of VOMock1 objects in the childList should be 4', 4, childList.childrenOfType(VOMock1).length);
+		}
 	}
 }
