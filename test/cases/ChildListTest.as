@@ -50,7 +50,7 @@ package cases
 		[Test]
 		public function canCreateChildNode():void
 		{
-			var childList:ChildList = new ChildList(childlistdata.item);
+			var childList:ChildList = new ChildList(childlistdata.children());
 			injector.injectInto(childList);
 			Assert.assertTrue('injector was set', childList.injector);
 			Assert.assertTrue('nodemap was set', childList.nodeMap);
@@ -59,9 +59,9 @@ package cases
 		[Test]
 		public function canEvaluateChildList():void
 		{
-			var childList:ChildList = mapItems(childlistdata.item);
+			var childList:ChildList = mapItems(childlistdata.children());
 			var objects:Array = childList.children();
-			Assert.assertEquals('4 children should be created', 4, objects.length);
+			Assert.assertEquals('5 children should be created', 5, objects.length);
 		}
 		
 		[Test]
@@ -77,7 +77,7 @@ package cases
 		[Test]
 		public function valueObjectArePopulated():void
 		{
-			var objects:ChildList = mapItems(childlistdata.item);
+			var objects:ChildList = mapItems(childlistdata.children());
 			for each (var item:ViewMock1 in objects.childrenOfType(ViewMock1)) {
 				Assert.assertTrue(int(Number(item.dataProvider.ammount)) > 3);
 				Assert.assertTrue(int(Number(item.dataProvider.ammount)) < 41);
@@ -88,7 +88,7 @@ package cases
 		[Test]
 		public function iteratorIsSameAsArray():void
 		{
-			var objects:ChildList = mapItems(childlistdata.item);
+			var objects:ChildList = mapItems(childlistdata.children());
 			for each (var item:ViewMock1 in objects.iteratorForType(ViewMock1)) {
 				Assert.assertTrue(int(Number(item.dataProvider.ammount)) > 3);
 				Assert.assertTrue(int(Number(item.dataProvider.ammount)) < 41);
@@ -99,17 +99,19 @@ package cases
 		[Test]
 		public function iteratorAllowsDeletionOfItems():void
 		{
-			var objects:ChildList = mapItems(childlistdata.item);
+			var objects:ChildList = mapItems(childlistdata.children());
 			Assert.assertEquals("The number of items should be 4", 4, objects.childrenOfType(ViewMock1).length);
 			var iter:IChildListIterator = objects.iteratorForType(ViewMock1);
 			delete iter[1];
-			Assert.assertEquals("The number of items after delting an item should be 3", 3, objects.childrenOfType(ViewMock1).length);
+			
+			Assert.assertEquals("The number of items of type ViewMock1 after delting an item should be 3", 3, objects.childrenOfType(ViewMock1).length);
+			Assert.assertEquals("The number of items in general after deleting an item should be 4", 4, objects.children().length);
 		}
 		
 		[Test]
 		public function iteratorAllowsSubscriptAccess():void
 		{
-			var objects:ChildList = mapItems(childlistdata.item);
+			var objects:ChildList = mapItems(childlistdata.children());
 			var iter:IChildListIterator = objects.iteratorForType(ViewMock1);
 			Assert.assertTrue(int(Number(iter[1].dataProvider.ammount)) == 6);
 			Assert.assertTrue(int(Number(iter[3].dataProvider.ammount)) == 40);
@@ -165,7 +167,7 @@ package cases
 		[Test]
 		public function childListOnlyCreatesObjectsOnce():void
 		{
-			var childList:IChildList = mapItems(childlistdata.item);
+			var childList:IChildList = mapItems(childlistdata.children());
 			var objects:Array = childList.children();
 			var sameObjects:Array = childList.children();
 			Assert.assertEquals('Accessing childlist twice produces arrays of the same length',
