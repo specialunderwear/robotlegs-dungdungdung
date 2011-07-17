@@ -259,20 +259,28 @@ of those. Setting up the root ChildList works as follows::
     rootList.addChildrenTo(contextView);
 
 Ofcourse, you might not want to create all pages inside your application at once.
-dungdungdung creates *lists* not single objects so what you want to do is handle
-the creation of the pages yourself and give each page a rootList::
+You could handle the creation of the pages yourself and give each page a rootList::
 
     // inside you Page mediator
     var pageList:IChildList = createChildList(pagexml, injector);
     (this.getViewComponent() as Page).childList = pageList;
 
-Or you can just use the iterator, which only creates the objects you request::
+Or you might want to use **The Iterator**.
+
+
+The Iterator
+------------
+
+The iterator gives you lazy object creation. Not the entire list of objects is
+created at once, only the objects you request. This means acces by index::
 
     // only create item at index 5
     var a:MyViewType = childList.iteratorForType(MyViewType)[5];
+
+But also access by looping (iteration)::
     
     // only create first 8 items.
-    // Note that the 6th item is allready created in the line above so it will return
+    // Note that the 6th item is allready created in the example above so it will return
     // the same object as is bound to variable 'a'
     var index:int = 0;
     for each(instance:MyViewType in childList.iteratorForType(MyViewType)) {
