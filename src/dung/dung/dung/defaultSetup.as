@@ -7,18 +7,16 @@ package dung.dung.dung
 
 	/**
 	 * Setup the dungdungdung nodemap and required injector mappings
-	 * @param injector A reference to the Injector, *NOT* IInjector
+	 * @param swiftSuspendersInjector A reference to the Injector, *NOT* IInjector
 	 * @param childNodeName If you want to use a different element as <children/>
 	 * 	to mark a childList, you can say which one using this parameter.
 	 */
 	
-	public function defaultSetup(injector:Injector, childNodeName:String='children'):void
+	public function defaultSetup(swiftSuspendersInjector:Injector, childNodeName:String='children'):void
 	{
 	    // map the injector, dungdungdung needs Injector, not robotlegs IInjector,
 	    // because it uses Injector.createChildInjector which is not declared in
 	    // IInjector, so we must map it separately.
-	    // DO NOT MAP THE INJECTOR AS A SINGLETON, WE NEED LOTS OF INJECTOR INSTANCES!
-	    var swiftSuspendersInjector:Injector = injector.getInstance(Injector) as Injector;
 	    injector.mapValue(Injector, swiftSuspendersInjector);
 
 	    // create and map a NodeMap instance, you can also map it as a Singleton if
