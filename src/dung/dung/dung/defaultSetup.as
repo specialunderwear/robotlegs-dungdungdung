@@ -17,7 +17,7 @@ package dung.dung.dung
 	    // map the injector, dungdungdung needs Injector, not robotlegs IInjector,
 	    // because it uses Injector.createChildInjector which is not declared in
 	    // IInjector, so we must map it separately.
-	    // DO NOT MAP THE INJECTOR AS A SINAGLETON, WE NEED LOTS OF INJECTOR INSTANCES!
+	    // DO NOT MAP THE INJECTOR AS A SINGLETON, WE NEED LOTS OF INJECTOR INSTANCES!
 	    var swiftSuspendersInjector:Injector = injector.getInstance(Injector) as Injector;
 	    injector.mapValue(Injector, swiftSuspendersInjector);
 
