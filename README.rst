@@ -61,8 +61,8 @@ and *text* and *font* are *properties*.
 Setup
 -----
 
-To setup dungdungdung, you have to create and map some objects. FortThe default
-setUp you just use ``defaultSetup`` in some command::
+To setup dungdungdung, you have to create and map some objects. For the default
+setup you can just use the ``defaultSetup`` utility function in some command::
 
     import dung.dung.dung.defaultSetup
     import org.swiftsuspenders.Injector;
@@ -264,7 +264,9 @@ to the view component::
         }
     }
 
-That will also work just fine.
+That will also work just fine. Ofcourse, you can also use the same trick to have
+dungdungdung create only value object (trees) for you, and no viewcomponents at all.
+(but then you would be missing the point entirely).
 
 Start up the factory
 --------------------
