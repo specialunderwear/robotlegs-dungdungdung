@@ -31,14 +31,7 @@ is produced by django-easymode::
                             Ut nulla. Vivamus bibendum, nulla ut congue fringilla,
                             lorem ipsum ultricies risus, ut rutrum velit tortor vel
                             purus. In hac habitasse platea dictumst. Duis fermentum,
-                            metus sed congue gravida, arcu dui ornare urna, ut 
-                            imperdiet enim odio dignissim ipsum. Nulla facilisi. Cras
-                            magna ante, bibendum sit amet, porta vitae, laoreet ut,
-                            justo. Nam tortor sapien, pulvinar nec, malesuada in,
-                            ultrices in, tortor. Cras ultricies placerat eros.
-                            Quisque odio eros, feugiat non, iaculis nec, lobortis
-                            sed, arcu. Pellentesque sit amet sem et purus pretium
-                            consectetuer.
+                            metus sed congue gravida, arcu dui ornare urna.
                         </text>
                         <font>Arial</font>
                     </textblock>
@@ -68,31 +61,67 @@ and *text* and *font* are *properties*.
 Setup
 -----
 
-To setup dungdungdung, you have to create and map some objects::
+To setup dungdungdung, you have to create and map some objects. FortThe default
+setUp you just use ``defaultSetup`` in some command::
 
+    import dung.dung.dung.defaultSetup
     import org.swiftsuspenders.Injector;
-    import dung.dung.dung.core.NodeMap;
-    import dung.dung.dung.interfaces.INodeMap;
-    import dung.dung.dung.core.ChildList;
     
-    // somewhere in your Context or some other class that has *injector*    
-    // map the injector, dungdungdung needs Injector, not robotlegs IInjector,
-    // because it uses Injector.createChildInjector which is not declared in
-    // IInjector, so we must map it separately.
-    // DO NOT MAP THE INJECTOR AS A SINAGLETON, WE NEED LOTS OF INJECTOR INSTANCES!
-    var swiftSuspendersInjector:Injector = injector.getInstance(Injector) as Injector;
-    injector.mapValue(Injector, swiftSuspendersInjector);
+    class StartUpCommand extends Command
+    {
+        override public function execute():void
+        {
+            // pass defaultSetup an org.swiftsuspenders.Injector object,
+            // cast if needed.
+            defaultSetup(this.injector as Injector);
+        }
+    }
 
-    // create and map a NodeMap instance, you can also map it as a Singleton if
-    // you want.
-    var nodeMap:NodeMap = new NodeMap();
-    injector.mapValue(INodeMap, nodeMap);
+Or you can specify a different nodeName using the second parameter of
+``defaultSetup``::
     
-    // now we must tell dungdungdung which xml nodes mark a *list*
-    // for the above xml *pages* marks a list, but that is the root list, all
-    // child lists are named *children*
-    injector.mapValue(String, 'children', ChildList.CHILDLIST_NODE_NAME);
+    // this will make ``dungdungdung`` treat nodes with the name *items* as *lists*.
+    defaultSetup(this.injector as Injector, 'items');
 
+Doing the above makes ``dungdungdung`` look for the ``<items/>`` node instead of the
+``<children/>`` node for creating ``childList``'s::
+
+    <root>
+        <pages>
+            <page>
+                <name>defaultSetup</name>
+                <title>defaultSetup can have an optional childlistNodeName parameter</title>
+                <!-- items marks child objects need to be created, because -->
+                <!-- we told dungdungdung that -->
+                <items>
+                    <textblock>
+                        <text>
+                            hi there I am a child.
+                        </text>
+                        <font>Arial</font>
+                    </textblock>
+                    <imageviewer>
+                        <children>
+                            <image>
+                                <description>What a pretty image indeed</description>
+                                <url><a href="prettyimage.jpg"/></url>
+                            </image>
+                            <image>
+                                <description>What an ugly image indeed</description>
+                                <url><a href="uglyimage.jpg"/></url>
+                            </image>
+                        </children>
+                    </imageviewer>
+                </items>
+            </page>
+            <!-- more pages go here -->
+        </pages>
+    </root>
+
+You can look into the sourceCode of ``defaultSetup`` to see what exactly is
+needed to start using ``dungdungdung``
+
+    
 Map xml nodes to view components and value objects
 --------------------------------------------------
 
