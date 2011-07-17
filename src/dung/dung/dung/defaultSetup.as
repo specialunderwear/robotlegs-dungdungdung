@@ -6,8 +6,8 @@ package dung.dung.dung
     import dung.dung.dung.core.ChildList;
 
 	/**
-	 * Setup the dungdungdung nodemap and required injector mappings
-	 * @param swiftSuspendersInjector A reference to the Injector, *NOT* IInjector
+	 * Setup the dungdungdung nodemap and required injector mappings.
+	 * @param swiftSuspendersInjector A reference to the Injector, *NOT* IInjector.
 	 * @param childNodeName If you want to use a different element as <children/>
 	 * 	to mark a childList, you can say which one using this parameter.
 	 * @return the <code>INodeMap</code> instance that was mapped and created during setup.
