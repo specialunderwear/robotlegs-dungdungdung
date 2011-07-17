@@ -64,16 +64,20 @@ Setup
 To setup dungdungdung, you have to create and map some objects. For the default
 setup you can just use the ``defaultSetup`` utility function in some command::
 
-    import dung.dung.dung.defaultSetup
     import org.swiftsuspenders.Injector;
-    
+    import dung.dung.dung.defaultSetup
+    import dung.dung.dung.interfaces.INodeMap;
+	
     class StartUpCommand extends Command
     {
         override public function execute():void
         {
             // pass defaultSetup an org.swiftsuspenders.Injector object,
             // cast if needed.
-            defaultSetup(this.injector as Injector);
+            var nodeMap:INodeMap = defaultSetup(this.injector as Injector);
+            
+            // You could do your node mapping here. (See 'Map xml nodes to view components and value objects')
+            /* ... */
         }
     }
 

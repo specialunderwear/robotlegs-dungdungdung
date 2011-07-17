@@ -1,6 +1,5 @@
 package cases
 {	
-	import dung.dung.dung.core.NodeMap;
 	import dung.dung.dung.interfaces.INodeMap;
 	import data.childlistdata;
 	import dung.dung.dung.core.ChildList;
@@ -16,11 +15,12 @@ package cases
 	import mocks.ViewMock4;
 	import dung.dung.dung.interfaces.IChildListIterator;
 	import dung.dung.dung.createChildList;
+	import dung.dung.dung.defaultSetup;
 	
 	public class ChildListTest
 	{
 		private var injector:Injector;
-		private var nodeMap:NodeMap;
+		private var nodeMap:INodeMap;
 		
 		private function mapItems(data:XMLList):IChildList
 		{
@@ -37,13 +37,11 @@ package cases
 		public function runBeforeEachTest():void
 		{
 			injector = new Injector;
-			nodeMap = new NodeMap();
-			injector.mapValue(Injector, injector);
-			injector.mapValue(INodeMap, nodeMap);
+			nodeMap = defaultSetup(injector);
+			
 			injector.mapClass(ViewMock2, ViewMock2);
 			injector.mapClass(ViewMock4, ViewMock4);
 			injector.mapClass(IChildList, ChildList);
-			injector.mapValue(String, 'children', ChildList.CHILDLIST_NODE_NAME);
 		}
 		
 		[Test]
