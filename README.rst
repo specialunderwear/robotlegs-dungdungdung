@@ -197,6 +197,7 @@ has the following interface::
             function addChildrenOfTypeTo(type:Class, parent:DisplayObjectContainer):Array;
             function children():Array;
             function childrenOfType(type:Class):Array;
+            function iteratorForType(type:Class):IChildListIterator;
         }
 
     }
