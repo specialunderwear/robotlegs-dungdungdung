@@ -23,7 +23,7 @@ package dung.dung.dung.core
 	 * When manually constructing a <code>ChildList</code>, you must pass an <code>XMLList</code>
 	 * to the constructor, and after that inject dependencies:
 	 * <pre>
-	 * var c:IChildList = new ChildList(<root><a/><b/></root>.children());
+	 * var c:IChildList = new ChildList(&lt;root&gt;&lt;a/&gt;&lt;b/&gt;&lt;/root&gt;.children());
 	 * injector.injectInto(c);
 	 * </pre>
 	 * 
@@ -175,6 +175,16 @@ package dung.dung.dung.core
 
 			return childrenOfType;
 		}
+		
+		/**
+		 * Get an iterator object that can be used to allow lazy creation of items
+		 * in the child list, as opposed to creating all items in the child list at
+		 * once.
+		 * 
+		 * @see @see dung.dung.dung.datastructures.ChildListIterator;
+		 * @param type The iterator will allow you to access objects of this type.
+		 * @return IChildListIterator 
+		 */
 		
 		public function iteratorForType(type:Class):IChildListIterator
 		{
