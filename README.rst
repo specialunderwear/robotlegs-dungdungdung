@@ -228,8 +228,11 @@ This will go the same same path as with Page, creating TextBlock instances and
 ImageViewer instances with the proper value objects injected.
 
 If you don't want to expand the entire tree and create all objects, you don't
-have to! ChildList is **lazy** you can wait for an event or whatever and only
-then start creating the objects.
+have to! ``ChildList`` is **lazy** you can wait for an event or whatever and only
+then start creating the objects. If you want the ``ChildList`` to be even more
+lazy, like when you need only *some* of the objects in it and not *all*, you can
+use *The Iterator*, ``childList.iteratorForType(SomeType)`` (See section
+'The Iterator' below).
 
 Note that ImageViewer does not have any *properties*, so it does not need a
 value object, this is reflected in the mapping which was::
