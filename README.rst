@@ -274,7 +274,6 @@ to the view component::
 
 That will also work just fine. Ofcourse, you can also use the same trick to have
 dungdungdung create only value object (trees) for you, and no viewcomponents at all.
-(but then you would be missing the point entirely).
 
 Start up the factory
 --------------------
