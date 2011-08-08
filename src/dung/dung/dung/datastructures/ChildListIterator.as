@@ -106,7 +106,6 @@ package dung.dung.dung.datastructures
 		
 		flash_proxy override function deleteProperty(name:*):Boolean
 		{
-			;
 			return _childList.outerspace::deleteItemFromAll(_typeArray[name]) &&
 				delete _typeArray[name];
 		}
