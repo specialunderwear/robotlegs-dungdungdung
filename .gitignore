@@ -1,6 +1,7 @@
 *.swf
 *.log
 *.cache
+lib/as3-injector
 lib/robotlegs
 lib/SwiftSuspenders
 bin/dungdungdung*.swc
