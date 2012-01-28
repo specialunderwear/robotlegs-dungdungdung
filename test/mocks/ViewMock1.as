@@ -16,7 +16,7 @@ package mocks
 		public function initialize():void
 		{
 			if (dataProvider.ammount == '9') {
-				(childList as ChildList).injector.mapClass(ViewMock2, ViewMock3);
+				(childList as ChildList).injector.map(ViewMock2).toType(ViewMock3);
 			}
 			childList.addChildrenOfTypeTo(ViewMock2, this);
 		}

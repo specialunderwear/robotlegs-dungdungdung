@@ -2,8 +2,9 @@ package cases
 {	
 	import mocks.RobotLegsAssuptionsMock;
 	import org.flexunit.Assert;
-	import org.swiftsuspenders.InjectionConfig;
+	import org.swiftsuspenders.InjectionMapping;
 	import org.swiftsuspenders.Injector;
+	import org.swiftsuspenders.utils.SsInternal;
 	import flash.system.System;
 	
 	public class RobotLegsAssuptionsTest
@@ -27,13 +28,13 @@ package cases
 		public function mappingsDefinedInParentInjectorAfterChildInjectorWasCreatedWork():void
 		{
 			var childInjector:Injector = injector.createChildInjector();
-			var rule:InjectionConfig = injector.mapClass(RobotLegsAssuptionsMock, RobotLegsAssuptionsMock);
+			var rule:InjectionMapping = injector.map(RobotLegsAssuptionsMock);
 			rule.setInjector(childInjector);
-			childInjector.mapValue(String, 'haha', 'moo');
+			childInjector.map(String, 'moo').toValue('haha');
 			
 			// define new mapping in parent injector.
-			injector.mapValue(String, 'whut', 'lmao')
-			var mock:RobotLegsAssuptionsMock = childInjector.instantiate(RobotLegsAssuptionsMock);
+			injector.map(String, 'lmao').toValue('whut');
+			var mock:RobotLegsAssuptionsMock = childInjector.SsInternal::instantiateUnmapped(RobotLegsAssuptionsMock);
 			
 			Assert.assertEquals('It should say hah', 'haha', mock.moo);
 			Assert.assertEquals('It should say whut', 'whut', mock.lmao);
@@ -42,16 +43,16 @@ package cases
 		[Test]
 		public function getInstanceReturnsANewInstanceIfNotSingleTon():void
 		{
-			injector.mapValue(String, 'whut', 'lmao')
-			injector.mapValue(String, 'haha', 'moo');
-			injector.mapClass(RobotLegsAssuptionsMock, RobotLegsAssuptionsMock);
+			injector.map(String, 'lmao').toValue('whut')
+			injector.map(String, 'moo').toValue('haha');
+			injector.map(RobotLegsAssuptionsMock);
 			
 			var mock:RobotLegsAssuptionsMock = injector.getInstance(RobotLegsAssuptionsMock);
 			var differentMock:RobotLegsAssuptionsMock = injector.getInstance(RobotLegsAssuptionsMock);
 			
 			Assert.assertFalse('The objects should not be equal under strict equality', mock === differentMock);
 			
-			injector.mapSingleton(RobotLegsAssuptionsMock);
+			injector.map(RobotLegsAssuptionsMock).asSingleton();
 			mock = injector.getInstance(RobotLegsAssuptionsMock);
 			differentMock = injector.getInstance(RobotLegsAssuptionsMock);
 

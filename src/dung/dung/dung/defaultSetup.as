@@ -18,17 +18,17 @@ package dung.dung.dung
 	    // map the injector, dungdungdung needs Injector, not robotlegs IInjector,
 	    // because it uses Injector.createChildInjector which is not declared in
 	    // IInjector, so we must map it separately.
-	    swiftSuspendersInjector.mapValue(Injector, swiftSuspendersInjector);
+	    swiftSuspendersInjector.map(Injector).toValue(swiftSuspendersInjector);
 
 	    // create and map a NodeMap instance, you can also map it as a Singleton if
 	    // you want.
 	    var nodeMap:NodeMap = new NodeMap();
-	    swiftSuspendersInjector.mapValue(INodeMap, nodeMap);
+	    swiftSuspendersInjector.map(INodeMap).toValue(nodeMap);
 
 	    // now we must tell dungdungdung which xml nodes mark a *list*
 	    // for the above xml *pages* marks a list, but that is the root list, all
 	    // child lists are named *children*
-	    swiftSuspendersInjector.mapValue(String, 'children', ChildList.CHILDLIST_NODE_NAME);
+	    swiftSuspendersInjector.map(String, ChildList.CHILDLIST_NODE_NAME).toValue('children');
 		
 		return nodeMap;
 	}

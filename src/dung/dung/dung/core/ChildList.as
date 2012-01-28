@@ -9,10 +9,11 @@ package dung.dung.dung.core
 	import flash.display.DisplayObject;
 	import dung.dung.dung.core.ChildList;
 	import org.swiftsuspenders.Injector;
+	import org.swiftsuspenders.utils.SsInternal;
 	import dung.dung.dung.outerspace;
 	import dung.dung.dung.datastructures.ChildListIterator;
 	import dung.dung.dung.interfaces.IChildListIterator;
-	
+
 	/**
 	 * A lazy list of viewcomponents that are created when accessed.
 	 * 
@@ -47,7 +48,7 @@ package dung.dung.dung.core
 		/**
 		 * The name of the node in your xml that designates child objects.
 		 * you must map this name somewhere like this:
-		 * <pre>injector.mapValue(String, 'children', ChildList.CHILDLIST_NODE_NAME);</pre>
+		 * <pre>injector.map(String, ChildList.CHILDLIST_NODE_NAME).toValue('children');</pre>
 		 * 
 		 * In this case any xml node named 'children' will trigger the creation of another ChildList.
 		 */
@@ -243,9 +244,9 @@ package dung.dung.dung.core
 		protected function mapAsStringOrXML(childNode:XML):void {
 			// If the node is complex, bind as xml.
 			if (childNode.hasComplexContent()) {
-				injector.mapValue(XML, childNode, childNode.name());
+				injector.map(XML, childNode.name()).toValue(childNode);
 			} else { // if simple bind as String
-				injector.mapValue(String, childNode.text(), childNode.name())
+				injector.map(String, childNode.name()).toValue(childNode.text())
 			}
 		}
 		
@@ -266,12 +267,12 @@ package dung.dung.dung.core
 			// messing up global mappings.
 			var childInjector:Injector = injector.createChildInjector();
 			// remap Injector to use the child injector here.
-			childInjector.mapValue(Injector, childInjector);
+			childInjector.map(Injector).toValue(childInjector);
 			// inject injector and nodeMap, using the childInjector, which overrides the Injector mapping.
 			childInjector.injectInto(childList);
 		
 			// map as IChildList to be injected into the view, with the normal injector.
-			injector.mapValue(IChildList, childList);
+			injector.map(IChildList).toValue(childList);
 		}
 		
 		/**
@@ -305,8 +306,8 @@ package dung.dung.dung.core
 					// create value object with all values mapped above injected
 					// and map it because it will be injected into view.
 					// must use instantiate for the VO creation, because we are
-					// mapping the same Class with mapValue!!
-					injector.mapValue(dung.voClass, injector.instantiate(dung.voClass));
+					// mapping the same Class with package!!
+					injector.map(dung.voClass).toValue(injector.SsInternal::instantiateUnmapped(dung.voClass));
 				}
 			
 				// if there are children, map an IChildList with that node

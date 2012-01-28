@@ -24,7 +24,7 @@ package cases
 		
 		private function mapItems(data:XMLList):IChildList
 		{
-			injector.mapClass(ViewMock1, ViewMock1);
+			injector.map(ViewMock1);
 			nodeMap.mapPath('item', ViewMock1, VOMock1);
 			nodeMap.mapPath('item.children.message', ViewMock2, VOMock2);
 			nodeMap.mapPath('print', ViewMock4);
@@ -39,9 +39,9 @@ package cases
 			injector = new Injector;
 			nodeMap = defaultSetup(injector);
 			
-			injector.mapClass(ViewMock2, ViewMock2);
-			injector.mapClass(ViewMock4, ViewMock4);
-			injector.mapClass(IChildList, ChildList);
+			injector.map(ViewMock2);
+			injector.map(ViewMock4);
+			injector.map(IChildList).toType(ChildList);
 		}
 		
 		[Test]
@@ -179,7 +179,7 @@ package cases
 		[Test]
 		public function childListDoesNotNescessarilyContainDisplayObjects():void
 		{
-			injector.mapClass(VOMock1, VOMock1);
+			injector.map(VOMock1);
 			nodeMap.mapPath('item', VOMock1);
 			
 			var childList:ChildList = new ChildList(childlistdata.item);
